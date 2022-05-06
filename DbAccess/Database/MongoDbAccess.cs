@@ -9,7 +9,7 @@
         private readonly string connectionString;
 
         private const string databaseName = "GoodFood";
-        private const string ingredientCollection = "ingredients";
+        private const string ingredientCollection = "Ingredients";
 
         public IMongoCollection<Ingredient> IngredientCollection { get => MongoConnect<Ingredient>(ingredientCollection);}
 
