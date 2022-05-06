@@ -13,10 +13,7 @@
 
         public IMongoCollection<Ingredient> IngredientCollection { get => MongoConnect<Ingredient>(ingredientCollection);}
 
-        public MongoDbAccess(IConnectionStringHelper csh)
-        {
-            connectionString = csh.ConnectionString;
-        }
+        public MongoDbAccess(IConnectionStringHelper csh) => connectionString = csh.ConnectionString;
 
         private IMongoCollection<T> MongoConnect<T>(in string collection)
         {

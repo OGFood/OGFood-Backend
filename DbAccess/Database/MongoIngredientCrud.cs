@@ -11,10 +11,7 @@
     {
         private readonly IMongoCollection<Ingredient> ingredients;
 
-        public MongoIngredientCrud(MongoDbAccess dbAccess)
-        {
-            ingredients = dbAccess.IngredientCollection;
-        }
+        public MongoIngredientCrud(MongoDbAccess dbAccess) => ingredients = dbAccess.IngredientCollection;
         public async Task<Ingredient> GetIngredientById(string id)
         {
             var output = await ingredients.FindAsync(i => i.Id == id);
@@ -25,11 +22,14 @@
             var output = await ingredients.FindAsync(i => i.Name == name);
             return output.FirstOrDefault();
         }
+
+#pragma warning disable RCS1155 // Use StringComparison when comparing strings.
         public async Task<List<Ingredient>> GetIngredientsByNameBeginsWith(string searchString)
         {
             var result = await ingredients.FindAsync(x =>
                 x.Name.ToLower().StartsWith(searchString.ToLower()));
             return result.ToList();
         }
+#pragma warning restore RCS1155 // Use StringComparison when comparing strings.
     }
 }
