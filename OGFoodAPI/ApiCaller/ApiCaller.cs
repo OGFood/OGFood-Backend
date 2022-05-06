@@ -15,9 +15,9 @@ namespace OGFoodAPI.ApiCaller
             return _apiCaller.ProcessData(data);
         }
 
-        public ApiResponse Request(ApiRequest apiRequest)
+        public async Task<ApiResponse> Request(ApiRequest apiRequest)
         {
-            return _apiCaller.Request(apiRequest);
+            return await _apiCaller.Request(apiRequest);
         }
     }
 }

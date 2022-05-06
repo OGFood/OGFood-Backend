@@ -10,9 +10,9 @@ namespace OGFoodAPI.ApiCaller.Strats
             return new Recipe();
         }
 
-        public ApiResponse Request(ApiRequest apiRequest)
+        public Task<ApiResponse> Request(ApiRequest apiRequest)
         {
-            return new ApiResponse();
+            return null;
         }
     }
 }

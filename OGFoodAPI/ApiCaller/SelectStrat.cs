@@ -5,16 +5,19 @@ namespace OGFoodAPI.ApiCaller
 {
     public class SelectStrat
     {
-        public void Go()
+
+        public async Task<Recipe> Go()
         {
             IApiCaller apiCaller = new ApiCaller(new PokeApiStrat());
             ApiResponse requestMessage;
             ApiRequest recipeRequest = new ApiRequest();
 
-            requestMessage = apiCaller.Request(recipeRequest);
+            requestMessage = await apiCaller.Request(recipeRequest);
 
             if(requestMessage.succeeded)
-                apiCaller.ProcessData(requestMessage.message);
+                return apiCaller.ProcessData(requestMessage.message);
+
+            return new Recipe();
         }
     }
 }

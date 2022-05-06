@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OGFoodAPI.ApiCaller;
+using OGFoodAPI.SharedApiCom;
 
 namespace OGFoodAPI.Controllers
 {
     public class ApiRequestTest : ControllerBase
     {
         [Route("test")]
-        public string Index()
+        public async Task<string> Index()
         {
             SelectStrat callApi = new SelectStrat();
-            callApi.Go();
+            Recipe recipe = await callApi.Go();
 
-            return "test";
+            return recipe.str;
         }
     }
 }
