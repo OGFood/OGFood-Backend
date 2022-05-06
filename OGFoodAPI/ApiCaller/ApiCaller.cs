@@ -4,7 +4,7 @@ namespace OGFoodAPI.ApiCaller
 {
     public class ApiCaller : IApiCaller
     {
-        IApiCaller _apiCaller;
+        readonly IApiCaller _apiCaller;
         public ApiCaller(IApiCaller apiCaller)
         {
             _apiCaller = apiCaller;
