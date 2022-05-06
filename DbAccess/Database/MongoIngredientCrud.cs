@@ -31,5 +31,10 @@
             return result.ToList();
         }
 #pragma warning restore RCS1155 // Use StringComparison when comparing strings.
+        public async Task<List<Ingredient>> GetAllIngredients()
+        {
+            var result = await ingredients.FindAsync(_ => true);
+            return result.ToList();
+        }
     }
 }
