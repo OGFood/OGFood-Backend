@@ -1,6 +1,6 @@
 ﻿namespace OGFoodAPI.ApiCaller
 {
-    public class RequestMessage
+    public class ApiResponse
     {
         public bool succeeded;
         public string message;

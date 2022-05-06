@@ -1,6 +1,6 @@
 ﻿namespace OGFoodAPI.SharedApiCom
 {
-    public class RecipeRequest
+    public class ApiRequest
     {
     }
 }

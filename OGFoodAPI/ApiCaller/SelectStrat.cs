@@ -7,12 +7,11 @@ namespace OGFoodAPI.ApiCaller
     {
         public void Go()
         {
-            IApiCaller apiCaller = new ApiCaller(new ApiCallStratergy());
-            RequestMessage requestMessage;
-            RecipeRequest recipeRequest = new RecipeRequest();
+            IApiCaller apiCaller = new ApiCaller(new PokeApiStrat());
+            ApiResponse requestMessage;
+            ApiRequest recipeRequest = new ApiRequest();
 
-            apiCaller.BuildUrl(recipeRequest);
-            requestMessage = apiCaller.Request();
+            requestMessage = apiCaller.Request(recipeRequest);
 
             if(requestMessage.succeeded)
                 apiCaller.ProcessData(requestMessage.message);

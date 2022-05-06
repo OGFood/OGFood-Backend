@@ -10,19 +10,14 @@ namespace OGFoodAPI.ApiCaller
             _apiCaller = apiCaller;
         }
 
-        public string BuildUrl(RecipeRequest recipeRequest)
-        {
-            return _apiCaller.BuildUrl(recipeRequest);
-        }
-
         public Recipe ProcessData(string data)
         {
             return _apiCaller.ProcessData(data);
         }
 
-        public RequestMessage Request()
+        public ApiResponse Request(ApiRequest apiRequest)
         {
-            return _apiCaller.Request();
+            return _apiCaller.Request(apiRequest);
         }
     }
 }
