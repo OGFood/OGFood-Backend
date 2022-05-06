@@ -16,7 +16,7 @@ namespace DbAccess.Helpers
         private void ReadConnectionString()
         {
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            const string file = @"ConnectionString\sikrit-key.txt";
+            const string file = @"ConnectionString\sikrit-string.txt";
             var combined = Path.Combine(documents, file);
             if (File.Exists(combined)) ConnectionString = File.ReadAllText(combined);
         }
