@@ -1,9 +1,4 @@
-﻿// -----------------------------------------------------------------------------------------------
-//  IConnectionStringHelper.cs by Thomas Thorin, Copyright (C) 2022.
-//  Published under GNU General Public License v3 (GPL-3)
-// -----------------------------------------------------------------------------------------------
-
-namespace DbAccess.Interfaces
+﻿namespace DbAccess.Interfaces
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +6,7 @@ namespace DbAccess.Interfaces
     using System.Text;
     using System.Threading.Tasks;
 
-    internal interface IConnectionStringHelper
+    public interface IConnectionStringHelper
     {
         public string ConnectionString { get; }
     }
