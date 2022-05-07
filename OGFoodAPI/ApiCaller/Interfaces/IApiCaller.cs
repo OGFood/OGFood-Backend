@@ -1,4 +1,4 @@
-﻿using OGFoodAPI.SharedApiCom;
+﻿using OGFoodAPI.ApiCaller.Models;
 
 namespace OGFoodAPI.ApiCaller
 {

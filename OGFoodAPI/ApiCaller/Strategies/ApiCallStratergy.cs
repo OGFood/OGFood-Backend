@@ -1,6 +1,6 @@
-﻿using OGFoodAPI.SharedApiCom;
+﻿using OGFoodAPI.ApiCaller.Models;
 
-namespace OGFoodAPI.ApiCaller.Strats
+namespace OGFoodAPI.ApiCaller.Strategies
 {
     public class ApiCallStratergy : IApiCaller
     {

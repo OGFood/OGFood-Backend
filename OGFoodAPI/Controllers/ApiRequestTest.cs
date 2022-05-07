@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OGFoodAPI.ApiCaller;
-using OGFoodAPI.SharedApiCom;
+using OGFoodAPI.ApiCaller.Models;
 
 namespace OGFoodAPI.Controllers
 {

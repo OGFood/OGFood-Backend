@@ -1,11 +1,11 @@
-﻿using OGFoodAPI.SharedApiCom;
+﻿using OGFoodAPI.ApiCaller.Models;
 
 namespace OGFoodAPI.ApiCaller
 {
-    public class ApiCaller : IApiCaller
+    public class ApiCallerContext : IApiCaller
     {
         readonly IApiCaller _apiCaller;
-        public ApiCaller(IApiCaller apiCaller)
+        public ApiCallerContext(IApiCaller apiCaller)
         {
             _apiCaller = apiCaller;
         }

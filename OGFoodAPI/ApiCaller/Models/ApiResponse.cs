@@ -1,4 +1,4 @@
-﻿namespace OGFoodAPI.ApiCaller
+﻿namespace OGFoodAPI.ApiCaller.Models
 {
     public class ApiResponse
     {

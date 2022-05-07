@@ -1,5 +1,5 @@
-﻿using OGFoodAPI.ApiCaller.Strats;
-using OGFoodAPI.SharedApiCom;
+﻿using OGFoodAPI.ApiCaller.Models;
+using OGFoodAPI.ApiCaller.Strategies;
 
 namespace OGFoodAPI.ApiCaller
 {
@@ -8,16 +8,20 @@ namespace OGFoodAPI.ApiCaller
 
         public async Task<Recipe> Go()
         {
-            IApiCaller apiCaller = new ApiCaller(new PokeApiStrat());
-            ApiResponse requestMessage;
+            //Välj vilken strategy(api) som ska användas
+            IApiCaller apiCaller = new ApiCallerContext(new PokeApiStrat());
+
+            //Data som API:n behöver ska ligga i ett ApiRequest-objekt
             ApiRequest recipeRequest = new ApiRequest();
 
-            requestMessage = await apiCaller.Request(recipeRequest);
+            //Svar från API
+            ApiResponse requestMessage = await apiCaller.Request(recipeRequest);
 
             if(requestMessage.succeeded)
+                //Processering/deserialisering av data sker i ProcessData
                 return apiCaller.ProcessData(requestMessage.message);
 
-            return new Recipe();
+            return new Recipe() { str = "Data error"};
         }
     }
 }
