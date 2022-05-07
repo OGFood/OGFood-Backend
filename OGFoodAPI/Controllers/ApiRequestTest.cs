@@ -9,7 +9,7 @@ namespace OGFoodAPI.Controllers
         [Route("test")]
         public async Task<string> Index()
         {
-            SelectStrat callApi = new SelectStrat();
+            SelectStrat callApi = new();
             Recipe recipe = await callApi.Go();
 
             return recipe.str;
