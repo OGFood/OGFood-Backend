@@ -7,6 +7,7 @@ namespace OGFoodAPI.Controllers
     public class ApiRequestTest : ControllerBase
     {
         [Route("test")]
+        [HttpGet]
         public async Task<string> Index()
         {
             SelectStrat callApi = new();
