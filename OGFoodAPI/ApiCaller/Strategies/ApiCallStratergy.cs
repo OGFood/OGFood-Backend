@@ -6,7 +6,6 @@ namespace OGFoodAPI.ApiCaller.Strategies
     {
         public Recipe ProcessData(string data)
         {
-
             return new Recipe();
         }
 
