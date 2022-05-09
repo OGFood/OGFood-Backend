@@ -29,7 +29,6 @@ namespace OGFoodAPI.Controllers
             return output==null ? NotFound() : Ok(output);
         }
 
-
         [HttpGet("{search}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Ingredient>>> Search(string search = "")
