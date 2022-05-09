@@ -16,14 +16,27 @@ namespace OGFoodAPI.Controllers
 
         // GET: api/<IngredientsController>
         [HttpGet]
-        public async Task<IEnumerable<Ingredient>> Get() => await ingredients.GetAllIngredients();
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Ingredient>>> Get() => await ingredients.GetAllIngredients();
 
         // GET api/<IngredientsController>/5
-        [HttpGet("{id:length(24)}")]
-        public async Task<Ingredient> Get(string id) => await ingredients.GetIngredientById(id);
+        [HttpGet("{id:length(24)}", Name ="GetIngredient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Ingredient>> Get(string id)
+        {
+            var output = await ingredients.GetIngredientById(id);
+            return output==null ? NotFound() : Ok(output);
+        }
+
 
         [HttpGet("{search}")]
-        public async Task<IEnumerable<Ingredient>> Search(string search = "") => await ingredients.GetIngredientsByNameBeginsWith(search);
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Ingredient>>> Search(string search = "")
+        {
+            var output = await ingredients.GetIngredientsByNameBeginsWith(search);
+            return Ok(output);
+        }
 
         // POST api/<IngredientsController>
         //[HttpPost]
