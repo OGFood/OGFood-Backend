@@ -8,7 +8,7 @@ namespace OGFoodAPI.ApiCaller
         public async Task<Recipe> Go()
         {
             //Välj vilken strategy(api) som ska användas
-            IApiCaller apiCaller = new ApiCallerContext(new PokeApiStrat());
+            IApiCaller apiCaller = new ApiCallerContext(new LocalStorage());
 
             //Data som API:n behöver ska ligga i ett ApiRequest-objekt
             ApiRequest recipeRequest = new();
