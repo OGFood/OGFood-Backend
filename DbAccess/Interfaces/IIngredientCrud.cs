@@ -8,5 +8,8 @@
         public Task<Ingredient> GetIngredientById(string id);
         public Task<List<Ingredient>> GetIngredientsByNameBeginsWith(string searchString);
         public Task<List<Ingredient>> GetAllIngredients();
+        public Task AddIngredientAsync(Ingredient ingredient);
+        public Task UpdateIngredientAsync(string id, Ingredient ingredient);
+        public Task DeleteIngredientAsync(string id);
     }
 }
