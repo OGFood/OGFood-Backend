@@ -10,5 +10,6 @@
 
         internal static MongoDbAccess GetDbAccess() => new(GetConnectionStringHelper());
         public static IIngredientCrud GetIngredientCrud() => new MongoIngredientCrud(GetDbAccess());
+        public static IUserCrud GetUserCrud() => new MongoUserCrud(GetDbAccess());
     }
 }
