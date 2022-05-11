@@ -1,8 +1,8 @@
-﻿using OGFoodAPI.ApiCaller.Models;
+﻿using OGFoodAPI.RecipeService.Models;
 
-namespace OGFoodAPI.ApiCaller.Strategies
+namespace OGFoodAPI.RecipeService.Strategies
 {
-    public class PokeApiStrat : IApiCaller
+    public class PokeApiStrat : IRecipeService
     {
         string Url { get; } = "https://pokeapi.co/api/v2/";
 
@@ -14,7 +14,7 @@ namespace OGFoodAPI.ApiCaller.Strategies
 
             return await content.ReadAsStringAsync();
         }
-
+        
         public async Task<ApiResponse> Request(ApiRequest apiRequest)
         {
             string req = Url + "pokemon?offset=20&limit=20";
@@ -22,9 +22,12 @@ namespace OGFoodAPI.ApiCaller.Strategies
             return new ApiResponse() { succeeded = true, message = await ApiRequest(req) };
         }
 
-        public Recipe ProcessData(string data)
+        public List<Recipe> DeserializeData(string data)
         {
-            return new Recipe() { str = data};
+            var recipes = new List<Recipe>();
+            recipes.Add(new Recipe() { Description = data });
+
+            return recipes;
         }
     }
 }

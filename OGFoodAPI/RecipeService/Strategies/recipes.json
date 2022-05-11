@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Korvstroganoff",
+    "Description": "Klassisk jävla korvstroganoff",
+    "IngredientsTable": [
+      {
+        "Ingredient": {
+          "Id": "",
+          "Name": "Lök"
+        },
+        "Amount": 1.0,
+        "Unit": ""
+      },
+      {
+        "Ingredient": {
+          "Id": "",
+          "Name": "Falukorv"
+        },
+        "Amount": 0.5,
+        "Unit": ""
+      },
+      {
+        "Ingredient": {
+          "Id": "",
+          "Name": "Tomatpuré"
+        },
+        "Amount": 2.0,
+        "Unit": ""
+      }
+    ]
+  }
+]
