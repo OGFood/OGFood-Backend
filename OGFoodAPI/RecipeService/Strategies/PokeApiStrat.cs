@@ -14,18 +14,20 @@ namespace OGFoodAPI.RecipeService.Strategies
 
             return await content.ReadAsStringAsync();
         }
-        
+
         public async Task<ApiResponse> Request(ApiRequest apiRequest)
         {
             string req = Url + "pokemon?offset=20&limit=20";
 
-            return new ApiResponse() { succeeded = true, message = await ApiRequest(req) };
+            return new ApiResponse() { Succeeded = true, Message = await ApiRequest(req) };
         }
 
-        public List<Recipe> DeserializeData(string data, ApiRequest apiRequest)
+        public List<Recipe> DeserializeAndProcessData(string data, ApiRequest apiRequest)
         {
-            var recipes = new List<Recipe>();
-            recipes.Add(new Recipe() { Description = data });
+            var recipes = new List<Recipe>
+            {
+                new Recipe() { Description = data }
+            };
 
             return recipes;
         }

@@ -2,7 +2,7 @@
 {
     public class ApiResponse
     {
-        public bool succeeded;
-        public string message;
+        public bool Succeeded { get; set; } = false;
+        public string Message { get; set; } = "";
     }
 }

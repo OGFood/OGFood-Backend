@@ -9,45 +9,36 @@ namespace OGFoodAPI.RecipeService.Strategies
 
         public async Task<ApiResponse> Request(ApiRequest apiRequest)
         {
-            ApiResponse response = new ApiResponse();
+            ApiResponse response = new();
 
             if (await Task.Run(() => File.Exists(Url)))
             {
-                response.message = await File.ReadAllTextAsync(Url);
-                response.succeeded = true;
+                response.Message = await File.ReadAllTextAsync(Url);
+                response.Succeeded = true;
             }
             else
             {
-                throw new Exception("Couldn't open " + Url + " in LocalStorage");
+                response.Message = "Couldn't open " + Url + " in LocalStorage";
             }
 
             return response;
         }
 
-        public List<Recipe> DeserializeData(string data, ApiRequest apiRequest)
+        public List<Recipe> DeserializeAndProcessData(string data, ApiRequest apiRequest)
         {
-            /*
-            Recepten är redan sparade som ett List<Recipe>-object och behöver ingen ytterliggare bearbetning.
-            */
-            List<Recipe> recipes = JsonConvert.DeserializeObject<List<Recipe>>(data);
+            List<Recipe>? recipes = JsonConvert.DeserializeObject<List<Recipe>>(data) ?? new();
+            List<Recipe> results = new();
 
-            List<Recipe> results = new List<Recipe>();
             recipes.ForEach(recipe =>
             {
-                Console.WriteLine("Name of recipe " + recipe.Name);
-                Console.WriteLine("Length of ingredientWithAmount: " + recipe.IngredientsWithAmount.Count);
                 int ingredientCount = 0;
                 recipe.IngredientsWithAmount.ForEach(recipeIngredient =>
                 {
-                    Console.WriteLine("Name of ingredient: " + recipeIngredient.Ingredient.Name);
-                    Console.WriteLine("storage: " + JsonConvert.SerializeObject(recipeIngredient));
                     apiRequest.IngredientsWithAmount.ForEach(req =>
                     {
                         if (req.Ingredient.Id == recipeIngredient.Ingredient.Id && req.Amount >= recipeIngredient.Amount)
-                        {//Måste kolla alla ingredienser
+                        {
                             ingredientCount++;
-                            Console.WriteLine("req amount: " + req.Amount);
-                            Console.WriteLine("recipeIngredient amount: " + recipeIngredient.Amount);
                         }
                     });
                 });
@@ -59,44 +50,30 @@ namespace OGFoodAPI.RecipeService.Strategies
             });
 
             return results;
-
         }
 
         public async Task<string> GetRecipes(string search)
         {
-            //Välj vilken strategy(api) som ska användas
-            IRecipeContext recipeContext = new RecipeContext(new LocalStorage());
-
-            //Sökningen till API:n ska ligga i ett ApiRequest-objekt
+            //Ens ingredienser ska ligga i ett ApiRequest-objekt
             ApiRequest recipeRequest = new();
-            List<IngredientWithAmount> ingredientsWithAmount = new();
+            List<IngredientWithAmount>? ingredientsWithAmount;
 
             try
             {
-                ingredientsWithAmount = JsonConvert.DeserializeObject<List<IngredientWithAmount>>(search);
+                ingredientsWithAmount = JsonConvert.DeserializeObject<List<IngredientWithAmount>>(search) ?? new();
             }
             catch (Exception ex)
             {
-                return "Error deserializing search";
+                return "Error deserializing search. Error:" + ex;
             }
-
 
             recipeRequest.IngredientsWithAmount = ingredientsWithAmount;
 
             //Svar från API
-            ApiResponse response = await recipeContext.Request(recipeRequest);
-            List<Recipe> recipes = new();
+            ApiResponse response = await Request(recipeRequest);
 
-            if (response.succeeded)
-            {
-
-                recipes = recipeContext.DeserializeData(response.message, recipeRequest);
-                string json = JsonConvert.SerializeObject(recipes);
-
-                Console.WriteLine(json);
-
-                return json;
-            }
+            if (response.Succeeded)
+                return JsonConvert.SerializeObject(DeserializeAndProcessData(response.Message, recipeRequest));
 
             return "Request didn't succeed";
         }

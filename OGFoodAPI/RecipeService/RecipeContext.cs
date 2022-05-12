@@ -10,9 +10,9 @@ namespace OGFoodAPI.RecipeService
             _apiCaller = apiCaller;
         }
 
-        public List<Recipe> DeserializeData(string data, ApiRequest apiRequest)
+        public List<Recipe> DeserializeAndProcessData(string data, ApiRequest apiRequest)
         {
-            return _apiCaller.DeserializeData(data, apiRequest);
+            return _apiCaller.DeserializeAndProcessData(data, apiRequest);
         }
 
         public Task<string> GetRecipes(string search)

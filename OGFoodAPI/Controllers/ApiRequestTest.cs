@@ -29,10 +29,12 @@ namespace OGFoodAPI.Controllers
             var ingredient1 = new IngredientWithAmount() { Amount = 1, Ingredient = new Ingredient() { Id = "1", Name = "Lök" } };
             var ingredient2 = new IngredientWithAmount() { Amount = 1, Ingredient = new Ingredient() { Id = "2", Name = "Falukorv" } };
             var ingredient3 = new IngredientWithAmount() { Amount = 2, Ingredient = new Ingredient() { Id = "3", Name = "Tomatpuré" } };
-            var ingredientList = new List<IngredientWithAmount>();
-            ingredientList.Add(ingredient1);
-            ingredientList.Add(ingredient2);
-            ingredientList.Add(ingredient3);
+            var ingredientList = new List<IngredientWithAmount>
+            {
+                ingredient1,
+                ingredient2,
+                ingredient3
+            };
 
             var reqJson = JsonConvert.SerializeObject(ingredientList);
 

@@ -24,16 +24,18 @@ namespace OGFoodAPI_testing
             var ingredient1 = new IngredientWithAmount() { Amount = a, Ingredient = new Ingredient() { Id="1", Name = "Lök" } };
             var ingredient2 = new IngredientWithAmount() { Amount = b, Ingredient = new Ingredient() { Id="2", Name = "Falukorv" } };
             var ingredient3 = new IngredientWithAmount() { Amount = c, Ingredient = new Ingredient() { Id="3", Name = "Tomatpuré" } };
-            var ingredientList = new List<IngredientWithAmount>();
-            ingredientList.Add(ingredient1);
-            ingredientList.Add(ingredient2);
-            ingredientList.Add(ingredient3);
+            var ingredientList = new List<IngredientWithAmount>
+            {
+                ingredient1,
+                ingredient2,
+                ingredient3
+            };
 
             var reqJson = JsonConvert.SerializeObject(ingredientList);
             Debug.WriteLine(reqJson);
             var searchLocalStorage = new RecipeContext(new LocalStorage());
             var actual = await searchLocalStorage.GetRecipes(reqJson);
-            var expected = "[{\"Name\":\"Korvstroganoff\",\"Description\":\"Klassisk jävla korvstroganoff\",\"IngredientsWithAmount\":[{\"Ingredient\":{\"Id\":\"1\",\"Name\":\"Lök\"},\"Amount\":1.0,\"Unit\":\"\"},{\"Ingredient\":{\"Id\":\"2\",\"Name\":\"Falukorv\"},\"Amount\":0.5,\"Unit\":\"\"},{\"Ingredient\":{\"Id\":\"3\",\"Name\":\"Tomatpuré\"},\"Amount\":2.0,\"Unit\":\"\"}]}]";
+            const string expected = "[{\"Name\":\"Korvstroganoff\",\"Description\":\"Klassisk jävla korvstroganoff\",\"IngredientsWithAmount\":[{\"Ingredient\":{\"Id\":\"1\",\"Name\":\"Lök\"},\"Amount\":1.0,\"Unit\":\"\"},{\"Ingredient\":{\"Id\":\"2\",\"Name\":\"Falukorv\"},\"Amount\":0.5,\"Unit\":\"\"},{\"Ingredient\":{\"Id\":\"3\",\"Name\":\"Tomatpuré\"},\"Amount\":2.0,\"Unit\":\"\"}]}]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -47,16 +49,18 @@ namespace OGFoodAPI_testing
             var ingredient1 = new IngredientWithAmount() { Amount = a, Ingredient = new Ingredient() { Id = "1", Name = "Lök" } };
             var ingredient2 = new IngredientWithAmount() { Amount = b, Ingredient = new Ingredient() { Id = "2", Name = "Falukorv" } };
             var ingredient3 = new IngredientWithAmount() { Amount = c, Ingredient = new Ingredient() { Id = "3", Name = "Tomatpuré" } };
-            var ingredientList = new List<IngredientWithAmount>();
-            ingredientList.Add(ingredient1);
-            ingredientList.Add(ingredient2);
-            ingredientList.Add(ingredient3);
+            var ingredientList = new List<IngredientWithAmount>
+            {
+                ingredient1,
+                ingredient2,
+                ingredient3
+            };
 
             var reqJson = JsonConvert.SerializeObject(ingredientList);
             Debug.WriteLine(reqJson);
             var searchLocalStorage = new RecipeContext(new LocalStorage());
             var actual = await searchLocalStorage.GetRecipes(reqJson);
-            var expected = "[]";
+            const string expected = "[]";
 
             Assert.AreEqual(expected, actual);
         }
