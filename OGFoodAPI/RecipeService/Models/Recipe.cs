@@ -4,6 +4,6 @@
     {
         public string Name = "";
         public string Description = "";
-        public List<IngredientWithAmount> IngredientsTable { get; set; }
+        public List<IngredientWithAmount> IngredientsWithAmount { get; set; } = new();
     }
 }

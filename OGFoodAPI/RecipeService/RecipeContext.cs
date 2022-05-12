@@ -2,17 +2,17 @@
 
 namespace OGFoodAPI.RecipeService
 {
-    public class RecipeContext : IRecipeService
+    public class RecipeContext : IRecipeContext
     {
-        readonly IRecipeService _apiCaller;
-        public RecipeContext(IRecipeService apiCaller)
+        readonly IRecipeContext _apiCaller;
+        public RecipeContext(IRecipeContext apiCaller)
         {
             _apiCaller = apiCaller;
         }
 
-        public List<Recipe> DeserializeData(string data)
+        public List<Recipe> DeserializeData(string data, ApiRequest apiRequest)
         {
-            return _apiCaller.DeserializeData(data);
+            return _apiCaller.DeserializeData(data, apiRequest);
         }
 
         public async Task<ApiResponse> Request(ApiRequest apiRequest)

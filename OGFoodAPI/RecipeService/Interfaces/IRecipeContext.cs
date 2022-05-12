@@ -2,9 +2,9 @@
 
 namespace OGFoodAPI.RecipeService
 {
-    public interface IRecipeService
+    public interface IRecipeContext
     {
-        List<Recipe> DeserializeData(string data);
+        List<Recipe> DeserializeData(string data, ApiRequest apiRequest);
         Task<ApiResponse> Request(ApiRequest recipeRequest);
     }
 }

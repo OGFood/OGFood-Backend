@@ -18,39 +18,18 @@ namespace OGFoodAPI.Controllers
             if (search == null)
                 return "No data to show";
 
-            //Välj vilken strategy(api) som ska användas
-            IRecipeService apiCaller = new RecipeContext(new LocalStorage());
+            var ingredient1 = new IngredientWithAmount() { Amount = 1, Ingredient = new Ingredient() { Name = "Lök", Id="1" } };
+            var ingredient2 = new IngredientWithAmount() { Amount = 1, Ingredient = new Ingredient() { Name = "Tomatpure", Id="3" } };
+            var ingredientList = new List<IngredientWithAmount>();
+            ingredientList.Add(ingredient1);
+            ingredientList.Add(ingredient2);
 
-            //Sökningen till API:n ska ligga i ett ApiRequest-objekt
-            ApiRequest recipeRequest = new();
-            List<IngredientWithAmount> ingredientsWithAmount = new();
+            var reqJson = JsonConvert.SerializeObject(ingredientList);
 
-            try
-            {
-                ingredientsWithAmount = JsonConvert.DeserializeObject<List<IngredientWithAmount>>(search);
-            }
-            catch (Exception ex)
-            {
-                return "Error deserializing search";
-            }
+            Console.WriteLine("example request: " + reqJson);
 
-
-            recipeRequest.IngredientsWithAmount = ingredientsWithAmount;
-
-            //Svar från API
-            ApiResponse response = await apiCaller.Request(recipeRequest);
-            List<Recipe> recipes = new();
-
-            if (response.succeeded)
-            {
-                recipes = apiCaller.DeserializeData(response.message);
-
-                string json = JsonConvert.SerializeObject(recipes);
-
-                Console.WriteLine(json);
-
-                return json;
-            }
+            var searchLocalStorage = new InitializeLocalStorage();
+            return await searchLocalStorage.GetRecipes(search);
 
             throw new Exception("Error requesting data");
         }

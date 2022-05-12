@@ -2,7 +2,7 @@
 
 namespace OGFoodAPI.RecipeService.Strategies
 {
-    public class PokeApiStrat : IRecipeService
+    public class PokeApiStrat : IRecipeContext
     {
         string Url { get; } = "https://pokeapi.co/api/v2/";
 
@@ -22,7 +22,7 @@ namespace OGFoodAPI.RecipeService.Strategies
             return new ApiResponse() { succeeded = true, message = await ApiRequest(req) };
         }
 
-        public List<Recipe> DeserializeData(string data)
+        public List<Recipe> DeserializeData(string data, ApiRequest apiRequest)
         {
             var recipes = new List<Recipe>();
             recipes.Add(new Recipe() { Description = data });
