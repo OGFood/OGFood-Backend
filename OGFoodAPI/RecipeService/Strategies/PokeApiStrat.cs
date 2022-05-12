@@ -29,5 +29,10 @@ namespace OGFoodAPI.RecipeService.Strategies
 
             return recipes;
         }
+
+        public Task<string> GetRecipes(string search)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

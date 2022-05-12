@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using OGFoodAPI.RecipeService;
 using OGFoodAPI.RecipeService.Models;
+using OGFoodAPI.RecipeService.Strategies;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace OGFoodAPI_testing
 
             var reqJson = JsonConvert.SerializeObject(ingredientList);
             Debug.WriteLine(reqJson);
-            var searchLocalStorage = new InitializeLocalStorage();
+            var searchLocalStorage = new RecipeContext(new LocalStorage());
             var actual = await searchLocalStorage.GetRecipes(reqJson);
             var expected = "[{\"Name\":\"Korvstroganoff\",\"Description\":\"Klassisk jävla korvstroganoff\",\"IngredientsWithAmount\":[{\"Ingredient\":{\"Id\":\"1\",\"Name\":\"Lök\"},\"Amount\":1.0,\"Unit\":\"\"},{\"Ingredient\":{\"Id\":\"2\",\"Name\":\"Falukorv\"},\"Amount\":0.5,\"Unit\":\"\"},{\"Ingredient\":{\"Id\":\"3\",\"Name\":\"Tomatpuré\"},\"Amount\":2.0,\"Unit\":\"\"}]}]";
 
@@ -53,7 +54,7 @@ namespace OGFoodAPI_testing
 
             var reqJson = JsonConvert.SerializeObject(ingredientList);
             Debug.WriteLine(reqJson);
-            var searchLocalStorage = new InitializeLocalStorage();
+            var searchLocalStorage = new RecipeContext(new LocalStorage());
             var actual = await searchLocalStorage.GetRecipes(reqJson);
             var expected = "[]";
 

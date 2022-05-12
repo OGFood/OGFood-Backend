@@ -6,5 +6,6 @@ namespace OGFoodAPI.RecipeService
     {
         List<Recipe> DeserializeData(string data, ApiRequest apiRequest);
         Task<ApiResponse> Request(ApiRequest recipeRequest);
+        Task<string> GetRecipes(string search);
     }
 }
