@@ -6,7 +6,9 @@ namespace OGFoodAPI.Controllers
     using static DbAccess.Factory;
     using DbAccess.Interfaces;
     using DbAccess.Models;
+    using Microsoft.AspNetCore.Cors;
 
+    [EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class IngredientsController : ControllerBase
@@ -23,6 +25,7 @@ namespace OGFoodAPI.Controllers
         /// <response code="500">Oops! Can't get the ingredients right now.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        //[EnableCors("Policy1")]
         public async Task<ActionResult<IEnumerable<Ingredient>>> Get() => await ingredients.GetAllIngredients();
 
         /// <summary>
