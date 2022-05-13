@@ -21,7 +21,7 @@ namespace OGFoodAPI_testing
         [TestCase(1, 1, 2)]
         public async Task LocalStorage_Test_Korvstroganoff(int a, int b, int c)
         {
-            var ingredient1 = new IngredientWithAmount() { Amount = a, Ingredient = new Ingredient() { Id="1", Name = "Lök" } };
+            var ingredient1 = new IngredientWithAmount() { Amount = a, Ingredient = new Ingredient() { Id="1", Name = "Lok" } };
             var ingredient2 = new IngredientWithAmount() { Amount = b, Ingredient = new Ingredient() { Id="2", Name = "Falukorv" } };
             var ingredient3 = new IngredientWithAmount() { Amount = c, Ingredient = new Ingredient() { Id="3", Name = "Tomatpuré" } };
             var ingredientList = new List<IngredientWithAmount>
