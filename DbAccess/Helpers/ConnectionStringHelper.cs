@@ -4,7 +4,7 @@ namespace DbAccess.Helpers
     using System;
     using Interfaces;
 
-    internal sealed class ConnectionStringHelper : IConnectionStringHelper
+    public sealed class ConnectionStringHelper : IConnectionStringHelper
     {
         private static ConnectionStringHelper? instance = null;
 
