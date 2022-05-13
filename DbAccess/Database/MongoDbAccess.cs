@@ -11,7 +11,7 @@
         private const string databaseName = "GoodFood";
         private const string ingredientCollection = "Ingredients";
         private const string userCollection = "Users";
-        private const string recipeCollection = "Recipe";
+        private const string recipeCollection = "Recipes";
 
         public IMongoCollection<Ingredient> IngredientCollection { get => MongoConnect<Ingredient>(ingredientCollection);}
         public IMongoCollection<User> UserCollection { get => MongoConnect<User>(userCollection); }
