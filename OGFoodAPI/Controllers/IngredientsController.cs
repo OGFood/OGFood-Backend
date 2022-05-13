@@ -8,13 +8,15 @@ namespace OGFoodAPI.Controllers
     using DbAccess.Models;
     using Microsoft.AspNetCore.Cors;
 
+using DbAccess.Database;
+
     [EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class IngredientsController : ControllerBase
     {
-        readonly IIngredientCrud ingredients;
-        public IngredientsController() => ingredients = GetIngredientCrud();
+        readonly IIngredientCrud _ingredients;
+        public IngredientsController(IIngredientCrud ingredients) => _ingredients = ingredients;
 
         // GET: api/<IngredientsController>        
         /// <summary>
@@ -26,7 +28,7 @@ namespace OGFoodAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[EnableCors("Policy1")]
-        public async Task<ActionResult<IEnumerable<Ingredient>>> Get() => await ingredients.GetAllIngredients();
+        public async Task<ActionResult<IEnumerable<Ingredient>>> Get() => await _ingredients.GetAllIngredients();
 
         /// <summary>
         /// Gets a single ingredient by Id.
@@ -42,7 +44,7 @@ namespace OGFoodAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Ingredient>> Get(string id)
         {
-            var output = await ingredients.GetIngredientById(id);
+            var output = await _ingredients.GetIngredientById(id);
             return output==null ? NotFound() : Ok(output);
         }
 
@@ -57,7 +59,7 @@ namespace OGFoodAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Ingredient>>> Search(string search = "")
         {
-            var output = await ingredients.GetIngredientsByNameBeginsWith(search);
+            var output = await _ingredients.GetIngredientsByNameBeginsWith(search);
             return Ok(output);
         }
 
@@ -73,7 +75,7 @@ namespace OGFoodAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Post(Ingredient ingredient)
         {
-            await ingredients.AddIngredientAsync(ingredient);
+            await _ingredients.AddIngredientAsync(ingredient);
             return CreatedAtAction(nameof(Get), new {id=ingredient.Id},ingredient);
         }
 
@@ -90,11 +92,11 @@ namespace OGFoodAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(string id, Ingredient updateIngredient)
         {
-            var ingredient = await ingredients.GetIngredientById(id);
+            var ingredient = await _ingredients.GetIngredientById(id);
             if (ingredient == null) return NotFound();
 
             updateIngredient.Id = ingredient.Id;
-            await ingredients.UpdateIngredientAsync(id, updateIngredient);
+            await _ingredients.UpdateIngredientAsync(id, updateIngredient);
 
             return NoContent();
         }
@@ -112,10 +114,10 @@ namespace OGFoodAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
-            var ingredient = await ingredients.GetIngredientById(id);
+            var ingredient = await _ingredients.GetIngredientById(id);
             if (ingredient == null) return NotFound();
 
-            await ingredients.DeleteIngredientAsync(id);
+            await _ingredients.DeleteIngredientAsync(id);
             return NoContent();
         }
     }

@@ -1,3 +1,6 @@
+using DbAccess.Database;
+using DbAccess.Helpers;
+using DbAccess.Interfaces;
 using OGFoodAPI.RecipeService;
 using OGFoodAPI.RecipeService.Strategies;
 
@@ -18,6 +21,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IRecipeContext, LocalStorage>();
+
+builder.Services.AddSingleton<IConnectionStringHelper>(instance => ConnectionStringHelper.Instance);
+builder.Services.AddSingleton<MongoDbAccess>();
+builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
+builder.Services.AddSingleton<IRecipeCrud, MongoRecipeCrud>();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1",

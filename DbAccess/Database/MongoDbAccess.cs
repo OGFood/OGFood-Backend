@@ -4,7 +4,7 @@
     using MongoDB.Driver;
     using Models;
 
-    internal class MongoDbAccess
+    public class MongoDbAccess
     {
         private readonly string connectionString;
 

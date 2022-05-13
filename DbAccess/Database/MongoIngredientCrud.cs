@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    internal class MongoIngredientCrud : IIngredientCrud
+    public class MongoIngredientCrud : IIngredientCrud
     {
         private readonly IMongoCollection<Ingredient> ingredients;
 
