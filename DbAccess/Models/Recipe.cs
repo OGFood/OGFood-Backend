@@ -14,6 +14,7 @@
         public string AproxTime { get; set; } = "";
 
         public string ImgUrl { get; set; } = "";
+        public int Servings { get; set; }
         public List<RecipeIngredient> Ingredients { get; set; } = new();
     }
 }
