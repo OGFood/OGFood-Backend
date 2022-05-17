@@ -10,7 +10,7 @@
         public string Id { get; set; } = "";
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";
-        public string Instruction { get; set; } = "";
+        public string Instructions { get; set; } = "";
         public string AproxTime { get; set; } = "";
 
         public string ImgUrl { get; set; } = "";
