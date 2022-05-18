@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using static Factory;
 
     public class MongoRecipeCrud : IRecipeCrud
     {
@@ -37,8 +38,18 @@
             return result.ToList();
         }
 
-        public async Task AddRecipeAsync(Recipe recipe) => await _recipes.InsertOneAsync(recipe);
-        public async Task UpdateRecipeAsync(string id, Recipe recipe) => await _recipes.ReplaceOneAsync(x => x.Id == id, recipe);
+        public async Task AddRecipeAsync(Recipe recipe)
+        {
+            var fixRecipe = GetRecipeHelper();
+            await fixRecipe.FixIngredients(recipe);
+            await _recipes.InsertOneAsync(recipe);
+        }
+        public async Task UpdateRecipeAsync(string id, Recipe recipe)
+        {
+            var fixRecipe = GetRecipeHelper();
+            await fixRecipe.FixIngredients(recipe);
+            await _recipes.ReplaceOneAsync(x => x.Id == id, recipe);
+        }
         public async Task DeleteRecipeAsync(string id) => await _recipes.DeleteOneAsync(x => x.Id == id);
     }
 }
