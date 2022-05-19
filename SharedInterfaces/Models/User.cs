@@ -1,9 +1,9 @@
-﻿namespace DbAccess.Models
-{
-    using MongoDB.Bson.Serialization.Attributes;
-    using SharedInterfaces.Interfaces;
-    using System.Collections.Generic;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using SharedInterfaces.Interfaces;
+using System.Collections.Generic;
 
+namespace SharedInterfaces.Models
+{
     public class User : IUser
     {
         [BsonId]

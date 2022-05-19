@@ -3,20 +3,20 @@
 namespace OGFoodAPI.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using static DbAccess.Factory;
-    using DbAccess.Interfaces;
-    using DbAccess.Models;
     using Microsoft.AspNetCore.Cors;
-
-using DbAccess.Database;
+    using OGFoodAPI.DbService;
+    using OGFoodAPI.DbService.CrudHelpers;
+    using SharedInterfaces.Models;
 
     [EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class IngredientsController : ControllerBase
     {
-        readonly IIngredientCrud _ingredients;
-        public IngredientsController(IIngredientCrud ingredients) => _ingredients = ingredients;
+        MongoIngredientCrud _ingredients;
+
+        public IngredientsController(MongoDbContext dbContext) => _ingredients = new MongoIngredientCrud(dbContext);
+
 
         // GET: api/<IngredientsController>        
         /// <summary>
