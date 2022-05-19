@@ -4,7 +4,7 @@
     using Helpers;
     using Database;
 
-    public static class Factory
+    public class DbServiceContext
     {
         public static IConnectionStringHelper GetConnectionStringHelper() => ConnectionStringHelper.Instance;
 

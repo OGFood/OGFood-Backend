@@ -3,18 +3,16 @@
 namespace OGFoodAPI.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using static DbAccess.Factory;
-    using DbAccess.Interfaces;
-    using DbAccess.Models;
     using Microsoft.AspNetCore.Cors;
+    using RecipeService;
+    using SharedInterfaces.Models;
 
     [EnableCors("Policy1")]
     [Route("api/[controller]")]
-    [ApiController]
     public class RecipesController : ControllerBase
     {
-        readonly IRecipeCrud _recipes;
-        public RecipesController(IRecipeCrud recipes) => _recipes = recipes;
+        IRecipeContext _context;
+        public RecipesController(IRecipeContext context) => _context = context;
 
         /// <summary>
         /// Gets all the recipes.
@@ -24,25 +22,7 @@ namespace OGFoodAPI.Controllers
         /// <response code="500">Oops! Can't get the recipes right now.</response>
         // GET: api/<RecipeController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Recipe>>> Get() => await _recipes.GetAllRecipes();
-
-        /// <summary>
-        /// Gets a single recipe by Id.
-        /// </summary>
-        /// <remarks>The id is a 24 character long string</remarks>
-        /// <returns>The recipe specified by the id.</returns>
-        /// <response code="200">Recipe found.</response>
-        /// <response code="404">Recipe not found.</response>
-        /// <response code="500">Oops! Can't get the recipes right now.</response>
-        // GET api/<RecipesController>/5
-        [HttpGet("{id:length(24)}", Name ="GetRecipe")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Recipe>> Get(string id)
-        {
-            var output = await _recipes.GetRecipeById(id);
-            return output==null ? NotFound() : Ok(output);
-        }
+        public async Task<ActionResult<IEnumerable<Recipe>>> Get() => await _context.Get(new Recipe());
 
         /// <summary>
         /// Add a new recipe to the database.
@@ -56,7 +36,7 @@ namespace OGFoodAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Post(Recipe recipe)
         {
-            await _recipes.AddRecipeAsync(recipe);
+            await _context.Post(recipe);
             return CreatedAtAction(nameof(Get), new { id = recipe.Id }, recipe);
         }
 
@@ -71,13 +51,13 @@ namespace OGFoodAPI.Controllers
         [HttpPut("{id:length(24)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(string id, Recipe updateRecipe)
+        public async Task<IActionResult> Put(Recipe searchRecipe, Recipe updateRecipe)
         {
-            var recipe = await _recipes.GetRecipeById(id);
+            var recipe = await _context.Get(searchRecipe);
             if (recipe == null) return NotFound();
 
-            updateRecipe.Id = recipe.Id;
-            await _recipes.UpdateRecipeAsync(id, updateRecipe);
+            //TODO: Kolla så det bara finns 1
+            await _context.Put(recipe.First(), updateRecipe);
 
             return NoContent();
         }
@@ -93,12 +73,13 @@ namespace OGFoodAPI.Controllers
         [HttpDelete("{id:length(24)}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Recipe searchRecipe)
         {
-            var recipe = await _recipes.GetRecipeById(id);
+            var recipe = await _context.Get(searchRecipe);
             if (recipe == null) return NotFound();
 
-            await _recipes.DeleteRecipeAsync(id);
+            //TODO: Kolla så det bara finns en av receptet
+            await _context.Delete(recipe.First());
             return NoContent();
         }
     }

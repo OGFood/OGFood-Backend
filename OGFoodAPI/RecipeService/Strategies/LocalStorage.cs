@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using OGFoodAPI.RecipeService.Models;
+using SharedInterfaces.Models;
 
 namespace OGFoodAPI.RecipeService.Strategies
 {
@@ -32,7 +32,7 @@ namespace OGFoodAPI.RecipeService.Strategies
             recipes.ForEach(recipe =>
             {
                 int ingredientCount = 0;
-                recipe.IngredientsWithAmount.ForEach(recipeIngredient =>
+                recipe.Ingredients.ToList().ForEach(recipeIngredient =>
                 {
                     apiRequest.IngredientsWithAmount.ForEach(req =>
                     {
@@ -43,7 +43,7 @@ namespace OGFoodAPI.RecipeService.Strategies
                     });
                 });
 
-                if (!results.Contains(recipe) && ingredientCount == recipe.IngredientsWithAmount.Count)
+                if (!results.Contains(recipe) && ingredientCount == recipe.Ingredients.ToList().Count)
                 {
                     results.Add(recipe);
                 }
@@ -76,6 +76,31 @@ namespace OGFoodAPI.RecipeService.Strategies
                 return JsonConvert.SerializeObject(DeserializeAndProcessData(response.Message, recipeRequest));
 
             return "Request didn't succeed";
+        }
+
+        public Task<List<Recipe>> Get(Recipe recipe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Recipe>> Post(Recipe recipe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Recipe>> Patch(Recipe recipe, Recipe recipeUpdated)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Recipe> Delete(Recipe recipe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Recipe> Put(Recipe recipe, Recipe recipeUpdated)
+        {
+            throw new NotImplementedException();
         }
     }
 }
