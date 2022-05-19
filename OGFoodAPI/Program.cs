@@ -19,9 +19,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//var dbService = builder.Services.AddSingleton<MongoDbContext>();
-//var dbServiceInstance = (MongoDbContext)dbService.BuildServiceProvider().GetService(typeof(MongoDbContext));
 var csh = new ConnectionStringHelper();
+builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));
 builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(csh.ConnectionString)));
 
 builder.Services.AddSwaggerGen(c =>

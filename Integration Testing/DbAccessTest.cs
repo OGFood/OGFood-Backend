@@ -17,7 +17,7 @@ namespace Integration_Testing
         {
             var csh = new ConnectionStringHelper();
             var dbService = new MongoDbContext(csh.ConnectionString);
-            var crud = new MongoRecipeCrud(dbService);
+            var crud = new MongoIngredientCrud(dbService);
 
             var result = await crud.GetAllRecipes();
 
