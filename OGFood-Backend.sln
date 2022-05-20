@@ -11,10 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration Testing", "Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unit Testing", "Unit Testing\Unit Testing.csproj", "{09272502-3707-453E-9961-CEB5A8919EA1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbAccess", "DbAccess\DbAccess.csproj", "{7F241B29-69C7-4F34-B105-8A2E5C8DE84C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SharedInterfaces\SharedInterfaces.projitems*{17064b2d-84c0-40da-a2e1-d92fa1b1ef21}*SharedItemsImports = 5
 		SharedInterfaces\SharedInterfaces.projitems*{44f55b38-c77b-415d-94a4-222eacf5e705}*SharedItemsImports = 13
+		SharedInterfaces\SharedInterfaces.projitems*{7f241b29-69c7-4f34-b105-8a2e5c8de84c}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{09272502-3707-453E-9961-CEB5A8919EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09272502-3707-453E-9961-CEB5A8919EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09272502-3707-453E-9961-CEB5A8919EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F241B29-69C7-4F34-B105-8A2E5C8DE84C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F241B29-69C7-4F34-B105-8A2E5C8DE84C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F241B29-69C7-4F34-B105-8A2E5C8DE84C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F241B29-69C7-4F34-B105-8A2E5C8DE84C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

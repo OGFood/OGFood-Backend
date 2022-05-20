@@ -17,6 +17,8 @@
     <Folder Include="SharedInterfaces\" />
   </ItemGroup>
 
-  <Import Project="..\SharedInterfaces\SharedInterfaces.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\DbAccess\DbAccess.csproj" />
+  </ItemGroup>
 
 </Project>

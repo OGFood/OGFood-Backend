@@ -1,3 +1,5 @@
+using DbAccess.Database;
+using DbAccess.Interfaces;
 using OGFoodAPI.DbService;
 using OGFoodAPI.RecipeService;
 using OGFoodAPI.RecipeService.Strategies;
@@ -18,6 +20,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IConnectionStringHelper>(instance => DbAccess.Helpers.ConnectionStringHelper.Instance);
+builder.Services.AddSingleton<MongoDbAccess>();
+builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
+builder.Services.AddSingleton<IRecipeCrud, MongoRecipeCrud>();
 
 var csh = new ConnectionStringHelper();
 builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));

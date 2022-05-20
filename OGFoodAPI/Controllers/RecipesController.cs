@@ -3,9 +3,9 @@
 namespace OGFoodAPI.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using static DbAccess.Factory;
+    using DbAccess.Interfaces;
     using Microsoft.AspNetCore.Cors;
-    using OGFoodAPI.DbService.CrudHelpers;
-    using OGFoodAPI.DbService;
     using SharedInterfaces.Models;
 
     [EnableCors("Policy1")]
@@ -13,10 +13,8 @@ namespace OGFoodAPI.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        MongoRecipeCrud _recipes;
-
-        public RecipesController(MongoDbContext dbContext) => _recipes = new MongoRecipeCrud(dbContext);
-
+        readonly IRecipeCrud _recipes;
+        public RecipesController(IRecipeCrud recipes) => _recipes = recipes;
 
         /// <summary>
         /// Gets all the recipes.
