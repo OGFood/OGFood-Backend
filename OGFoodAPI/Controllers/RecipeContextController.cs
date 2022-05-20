@@ -8,7 +8,7 @@ namespace OGFoodAPI.Controllers
     using SharedInterfaces.Models;
 
     [EnableCors("Policy1")]
-    [Route("api/[controller]")]
+    
     public class RecipesContextController : ControllerBase
     {
         IRecipeContext _context;
@@ -21,6 +21,7 @@ namespace OGFoodAPI.Controllers
         /// <response code="200">Call ok.</response>
         /// <response code="500">Oops! Can't get the recipes right now.</response>
         // GET: api/<RecipeController>
+        [Route("/")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Recipe>>> Get() => await _context.Get(new Recipe());
 
