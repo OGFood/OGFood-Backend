@@ -2,6 +2,7 @@ using NUnit.Framework;
 using OGFoodAPI.DbService;
 using OGFoodAPI.DbService.CrudHelpers;
 using System.Threading.Tasks;
+using static DbAccess.Factory;
 
 namespace Integration_Testing
 {
@@ -15,11 +16,12 @@ namespace Integration_Testing
         [Test]
         public async Task ConnectRecipeCollection()
         {
-            var csh = new ConnectionStringHelper();
-            var dbService = new MongoDbContext(csh.ConnectionString);
-            var crud = new MongoIngredientCrud(dbService);
+            //var csh = new ConnectionStringHelper();
+            //var dbService = new MongoDbContext(csh.ConnectionString);
+            //var crud = new MongoIngredientCrud(dbService);
+            var sut = GetRecipeCrud();
 
-            var result = await crud.GetAllRecipes();
+            var result = await sut.GetAllRecipes();
 
             Assert.AreNotEqual(0, result.Count);
         }
@@ -27,11 +29,12 @@ namespace Integration_Testing
         [Test]
         public async Task ConnectIngredientCollection()
         {
-            var csh = new ConnectionStringHelper();
-            var dbService = new MongoDbContext(csh.ConnectionString);
-            var crud = new MongoIngredientCrud(dbService);
+            //var csh = new ConnectionStringHelper();
+            //var dbService = new MongoDbContext(csh.ConnectionString);
+            //var crud = new MongoIngredientCrud(dbService);
+            var sut = GetIngredientCrud();
 
-            var result = await crud.GetAllIngredients();
+            var result = await sut.GetAllIngredients();
 
             Assert.AreNotEqual(0, result.Count);
         }
