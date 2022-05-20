@@ -1,28 +1,20 @@
-﻿using OGFoodAPI.RecipeService.Models;
+﻿using SharedInterfaces.Models;
 
 namespace OGFoodAPI.RecipeService
 {
     public class RecipeContext : IRecipeContext
     {
-        readonly IRecipeContext _apiCaller;
-        public RecipeContext(IRecipeContext apiCaller)
-        {
-            _apiCaller = apiCaller;
-        }
+        readonly IRecipeContext _context;
+        public RecipeContext(IRecipeContext context) => _context = context;
 
-        public List<Recipe> DeserializeAndProcessData(string data, ApiRequest apiRequest)
-        {
-            return _apiCaller.DeserializeAndProcessData(data, apiRequest);
-        }
+        public async Task<Recipe> Delete(Recipe recipe) => await _context.Delete(recipe);
 
-        public Task<string> GetRecipes(string search)
-        {
-            return _apiCaller.GetRecipes(search);
-        }
+        public async Task<List<Recipe>> Get(Recipe recipe) => await _context.Get(recipe);
 
-        public async Task<ApiResponse> Request(ApiRequest apiRequest)
-        {
-            return await _apiCaller.Request(apiRequest);
-        }
+        public async Task<List<Recipe>> Patch(Recipe recipe, Recipe recipeUpdated) => await _context.Patch(recipe, recipeUpdated);
+
+        public async Task<List<Recipe>> Post(Recipe recipe) => await _context.Post(recipe);
+
+        public async Task<Recipe> Put(Recipe recipe, Recipe updatedRecipe) => await _context.Put(recipe, updatedRecipe);
     }
 }

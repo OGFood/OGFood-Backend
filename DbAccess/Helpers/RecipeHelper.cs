@@ -1,7 +1,7 @@
 ﻿namespace DbAccess.Helpers
 {
     using DbAccess.Interfaces;
-    using DbAccess.Models;
+    using SharedInterfaces.Models;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -17,7 +17,7 @@
         {
             var ingredientsList = await _ingredients.GetAllIngredients();
 
-            if (recipe.Ingredients.Count > 0)
+            if (recipe.Ingredients.Count() > 0)
             {
                 foreach (var ingredient in recipe.Ingredients)
                 {

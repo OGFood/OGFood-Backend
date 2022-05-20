@@ -1,4 +1,4 @@
-﻿namespace OGFoodAPI.RecipeService.Models
+﻿namespace SharedInterfaces.Models
 {
     public class ApiRequest
     {

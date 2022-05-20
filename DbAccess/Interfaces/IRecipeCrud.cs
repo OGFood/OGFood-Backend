@@ -1,6 +1,6 @@
 ﻿namespace DbAccess.Interfaces
 {
-    using DbAccess.Models;
+    using SharedInterfaces.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

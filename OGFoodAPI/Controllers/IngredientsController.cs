@@ -5,10 +5,9 @@ namespace OGFoodAPI.Controllers
     using Microsoft.AspNetCore.Mvc;
     using static DbAccess.Factory;
     using DbAccess.Interfaces;
-    using DbAccess.Models;
     using Microsoft.AspNetCore.Cors;
-
-using DbAccess.Database;
+    using DbAccess.Database;
+    using SharedInterfaces.Models;
 
     [EnableCors("Policy1")]
     [Route("api/[controller]")]
