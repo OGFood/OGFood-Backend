@@ -5,7 +5,9 @@ on:
    # branches: [ main,dev ]
   pull_request:
     branches: [ main,dev ]
-
+env:
+  CNNSTR: ${{ secrets.OGFOOD_BACKEND_CNNSTRING }}
+  
 jobs:
   build:
 
@@ -23,6 +25,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      env:
-        CNNSTR: ${{ secrets.OGFOOD_BACKEND_CNNSTRING }}
       run: dotnet test --no-build --verbosity normal
