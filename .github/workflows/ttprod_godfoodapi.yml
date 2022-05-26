@@ -9,6 +9,9 @@ on:
       - TTProd
   workflow_dispatch:
 
+env:
+  CNNSTR: ${{ secrets.OGFOOD_BACKEND_CNNSTRING }}
+  
 jobs:
   build:
     runs-on: windows-latest
