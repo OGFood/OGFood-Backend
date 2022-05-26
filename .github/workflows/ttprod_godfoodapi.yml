@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'GodFoodAPI'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_91B2497683A64D718F87C2339232D645 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB2D86CF505A43239F3F877D3390C402 }}
           package: .
