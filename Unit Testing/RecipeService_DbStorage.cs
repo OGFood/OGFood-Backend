@@ -47,6 +47,8 @@ namespace Unit_Testing
         }
 
         [Test]
+        [Ignore("depends on file RecipeMock.json wich is not in repo")]
+        
         public async Task Get()
         {
             var recipeService = new RecipeContext(new DbStorageMock(null));
