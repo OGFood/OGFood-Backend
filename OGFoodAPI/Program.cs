@@ -21,8 +21,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IConnectionStringHelper>(instance => DbAccess.Helpers.ConnectionStringHelper.Instance);
-builder.Services.AddSingleton<MongoDbAccess>();
+var cnnString = builder.Configuration.GetConnectionString("CUSTOMCONNSTR_ttmongodb");
+if (cnnString != "test")
+{
+    builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(cnnString));
+}
+else
+{
+    //builder.Services.AddSingleton<IConnectionStringHelper>(instance => DbAccess.Helpers.ConnectionStringHelper.Instance);
+    builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(DbAccess.Factory.GetConnectionStringHelper()));
+}
 builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
 builder.Services.AddSingleton<IRecipeCrud, MongoRecipeCrud>();
 
@@ -51,8 +59,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 //app.UseCors();
 
