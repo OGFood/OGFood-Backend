@@ -8,18 +8,19 @@ namespace DbAccess.Database
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using DbAccess.Helpers;
 
-    internal class MongoUserCrud : IUserCrud
+    public class MongoUserCrud : IUserCrud
     {
         private readonly IMongoCollection<User> Users;
         private readonly IPwdHelper pwdHelper;
         private readonly IMailHelper mailHelper;
 
-        public MongoUserCrud(MongoDbAccess dbAccess, IPwdHelper pwdHelper, IMailHelper mailHelper)
+        public MongoUserCrud(MongoDbAccess dbAccess)
         {
             Users = dbAccess.UserCollection;
-            this.pwdHelper = pwdHelper;
-            this.mailHelper = mailHelper;
+            pwdHelper = new PwdHelper();
+            mailHelper = new MailHelper();
         }
 
         // Create
