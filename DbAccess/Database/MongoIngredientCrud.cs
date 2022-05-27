@@ -34,7 +34,7 @@
         public async Task<List<Ingredient>> GetAllIngredients()
         {
             var result = await ingredients.FindAsync(_ => true);
-            return result.ToList();
+            return result.ToList().OrderBy(x => x.Name).ToList();
         }
 
         public async Task AddIngredientAsync(Ingredient ingredient) => await ingredients.InsertOneAsync(ingredient);

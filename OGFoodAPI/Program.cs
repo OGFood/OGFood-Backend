@@ -3,7 +3,6 @@ using DbAccess.Interfaces;
 using OGFoodAPI.DbService;
 using OGFoodAPI.RecipeService;
 using OGFoodAPI.RecipeService.Strategies;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,16 +23,16 @@ builder.Services.AddSwaggerGen();
 
 var cnnString = builder.Configuration.GetConnectionString("CUSTOMCONNSTR_ttmongodb");
 if (cnnString == "test") cnnString = Environment.GetEnvironmentVariable("CUSTOMCONNSTR_ttmongodb");
-        
+
 if (cnnString != "test" && !String.IsNullOrEmpty(cnnString))
 {
     builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(cnnString));
 }
 else
 {
-    //builder.Services.AddSingleton<IConnectionStringHelper>(instance => DbAccess.Helpers.ConnectionStringHelper.Instance);
     builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(DbAccess.Factory.GetConnectionStringHelper()));
 }
+
 builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
 builder.Services.AddSingleton<IRecipeCrud, MongoRecipeCrud>();
 
@@ -60,10 +59,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-app.UseSwagger();
-app.UseSwaggerUI();
 
 //app.UseCors();
 
