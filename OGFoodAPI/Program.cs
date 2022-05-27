@@ -26,9 +26,9 @@ builder.Services.AddSingleton<MongoDbAccess>();
 builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
 builder.Services.AddSingleton<IRecipeCrud, MongoRecipeCrud>();
 
-var csh = new ConnectionStringHelper();
-builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));
-builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(csh.ConnectionString)));
+//var csh = new ConnectionStringHelper();
+//builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));
+//builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(csh.ConnectionString)));
 
 builder.Services.AddSwaggerGen(c =>
 {
