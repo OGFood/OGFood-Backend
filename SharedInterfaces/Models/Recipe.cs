@@ -19,9 +19,9 @@ namespace SharedInterfaces.Models
         public string ImgUrl { get; set; } = "";
         public int Servings { get; set; }
         public IEnumerable<string> Instructions { get; set; }
-        [JsonConverter(typeof(ConcreteConverter<Ingredient>))]
+        //[JsonConverter(typeof(ConcreteConverter<Ingredient>))]
         [BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IEnumerable<IIngredientWithAmount>, List<IngredientWithAmount>>))]
 
-        public IEnumerable<IIngredientWithAmount> Ingredients { get; set; }
+        public IEnumerable<IIngredientWithAmount> Ingredients { get; set; } = new List<IIngredientWithAmount>();
     }
 }

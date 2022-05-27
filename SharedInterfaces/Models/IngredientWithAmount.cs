@@ -7,9 +7,9 @@ namespace SharedInterfaces.Models
 {
     public class IngredientWithAmount : IIngredientWithAmount
     {
-        [JsonConverter(typeof(ConcreteConverter<Ingredient>))]
+        //[JsonConverter(typeof(ConcreteConverter<Ingredient>))]
         [BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IIngredient, Ingredient>))]
-        public IIngredient Ingredient { get; set; }
+        public IIngredient Ingredient { get; set; } = new Ingredient();
         public double Amount { get; set; }
         public string Unit { get; set; } = "";
     }

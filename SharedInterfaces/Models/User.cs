@@ -13,6 +13,6 @@ namespace SharedInterfaces.Models
         public string Mail { get; set; } = "";
         public string Salt { get; set; } = "";
         public string Password { get; set; } = "";
-        public IEnumerable<IIngredient> Cupboard { get; set; }
+        public IEnumerable<IIngredient> Cupboard { get; set; } = new List<IIngredient>();
     }
 }

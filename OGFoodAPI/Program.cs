@@ -3,6 +3,7 @@ using DbAccess.Interfaces;
 using OGFoodAPI.DbService;
 using OGFoodAPI.RecipeService;
 using OGFoodAPI.RecipeService.Strategies;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var cnnString = builder.Configuration.GetConnectionString("CUSTOMCONNSTR_ttmongodb");
-if (cnnString != "test")
+if (cnnString == "test") cnnString = Environment.GetEnvironmentVariable("CUSTOMCONNSTR_ttmongodb");
+        
+if (cnnString != "test" && !String.IsNullOrEmpty(cnnString))
 {
     builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(cnnString));
 }
