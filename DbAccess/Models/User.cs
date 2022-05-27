@@ -4,6 +4,14 @@
 
     public class User
     {
+        public User(string name, string mail, string salt, string password)
+        {
+            Name = name;
+            Mail = mail;
+            Salt = salt;
+            Password = password;
+        }
+
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string Id { get; set; } = "";
