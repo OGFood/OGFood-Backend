@@ -9,7 +9,7 @@ namespace OGFoodAPI.Controllers
     using DbAccess.Database;
     using SharedInterfaces.Models;
 
-    [EnableCors("Policy1")]
+    //[EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class IngredientsController : ControllerBase

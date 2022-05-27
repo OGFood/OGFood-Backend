@@ -7,7 +7,7 @@ namespace OGFoodAPI.Controllers
     using RecipeService;
     using SharedInterfaces.Models;
 
-    [EnableCors("Policy1")]
+    //[EnableCors("Policy1")]
     
     public class RecipesContextController : ControllerBase
     {
