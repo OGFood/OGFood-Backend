@@ -20,8 +20,8 @@
         public string GetSaltedHash(string pwd, string salt)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(pwd + salt);
-            SHA256Managed sHA256ManagedString = new SHA256Managed();
-            byte[] hash = sHA256ManagedString.ComputeHash(bytes);
+            var SHA256String = SHA256.Create();
+            byte[] hash = SHA256String.ComputeHash(bytes);
 
             return Convert.ToBase64String(hash);
         }

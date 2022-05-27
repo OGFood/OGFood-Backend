@@ -58,10 +58,13 @@ namespace DbAccess.Database
             }
         }
 
+        // Read
+
         public async Task<bool> DeleteUser(string name, string password)
         {
-            // Fix params
-            if(pwdHelper.IsPwdValid(password))
+            var user = GetUserById(UserNameToId(name));
+
+            if(pwdHelper.IsPwdValid(password, user.Salt, user.Password))
             try
             {
                 await Users.DeleteOneAsync(u => u.Name == name);
@@ -73,14 +76,25 @@ namespace DbAccess.Database
             }
         }
 
+        public async Task<User> GetUserById(string id)
+        {
+            return await Users.FindAsync(u => u.Id == id).Current.FirstOrDefault();
+        }
+
         public Task<User> GetUserByMail(string mail, string password)
         {
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByName(string name, string password)
+        private async Task<string> UserNameToId(string name)
         {
-               
+            var user = await Users.FindAsync(u => u.Name == name);
+            return user.Current.FirstOrDefault().Name;
+        }
+
+        public async Task<User>GetUserByName()
+        {
+
         }
 
         public async Task<bool> IsNameOrMailTaken(string name = "", string mail = "")
@@ -105,5 +119,11 @@ namespace DbAccess.Database
         {
             throw new NotImplementedException();
         }
+
+        Task<bool> IUserCrud.UpdateUser(string name, string oldPassword, string newUsername, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
