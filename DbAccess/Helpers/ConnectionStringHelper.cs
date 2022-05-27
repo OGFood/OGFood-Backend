@@ -20,6 +20,7 @@ namespace DbAccess.Helpers
             var combined = Path.Combine(documents, file);
             if (File.Exists(combined)) ConnectionString = File.ReadAllText(combined);
             else if (Environment.GetEnvironmentVariable("CNNSTR") != "") ConnectionString = Environment.GetEnvironmentVariable("CNNSTR");
+            else if (Environment.GetEnvironmentVariable("CUSTOMCONNSTR_ttmongodb") != "") ConnectionString = Environment.GetEnvironmentVariable("CUSTOMCONNSTR_ttmongodb");
         }
     }
 }
