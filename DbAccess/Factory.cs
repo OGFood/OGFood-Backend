@@ -13,5 +13,7 @@
         internal static MongoDbAccess GetDbAccess() => new(GetConnectionStringHelper());
         public static IIngredientCrud GetIngredientCrud() => new MongoIngredientCrud(GetDbAccess());
         public static IUserCrud GetUserCrud() => new MongoUserCrud(GetDbAccess(), GetPwdHelper(), GetMailHelper());
+        public static IRecipeCrud GetRecipeCrud() => new MongoRecipeCrud(GetDbAccess());
+        internal static RecipeHelper GetRecipeHelper() => new(GetIngredientCrud());
     }
 }

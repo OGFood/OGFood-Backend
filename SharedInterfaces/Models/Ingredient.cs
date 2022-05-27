@@ -1,8 +1,9 @@
-﻿namespace DbAccess.Models
-{
-    using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using SharedInterfaces.Interfaces;
 
-    public class Ingredient
+namespace SharedInterfaces.Models
+{
+    public class Ingredient : IIngredient
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

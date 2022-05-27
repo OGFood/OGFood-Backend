@@ -1,8 +1,10 @@
-﻿namespace DbAccess.Models
-{
-    using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using SharedInterfaces.Interfaces;
+using System.Collections.Generic;
 
-    public class User
+namespace SharedInterfaces.Models
+{
+    public class User : IUser
     {
         public User(string name, string mail, string salt, string password)
         {
@@ -19,6 +21,6 @@
         public string Mail { get; set; } = "";
         public string Salt { get; set; } = "";
         public string Password { get; set; } = "";
-        public List<Ingredient> Cupboard { get; set; } = new List<Ingredient>();
+        public IEnumerable<IIngredient> Cupboard { get; set; }
     }
 }
