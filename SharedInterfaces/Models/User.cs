@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
+using Newtonsoft.Json;
 using SharedInterfaces.Interfaces;
 using System.Collections.Generic;
 
@@ -21,6 +23,8 @@ namespace SharedInterfaces.Models
         public string Mail { get; set; } = "";
         public string Salt { get; set; } = "";
         public string Password { get; set; } = "";
+        [JsonConverter(typeof(ConcreteConverter<IEnumerable<Ingredient>>))]
+        [BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IEnumerable<IIngredient>, IEnumerable<Ingredient>>))]
         public IEnumerable<IIngredient> Cupboard { get; set; }
     }
 }

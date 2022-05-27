@@ -25,33 +25,12 @@ namespace OGFoodAPI.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<IActionResult> Post(User user)
+        public async Task<ActionResult<bool>> Post(User user)
         {
-            var succeeded = _users.CreateUser(user);
-            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            var succeeded = await _users.CreateUser(user);
+            return succeeded;
         }
 
-        /// <summary>
-        /// Updates an existing recipe in the database.
-        /// </summary>
-        /// <remarks>Will update the recipe with the given id with content of the supplied recipe object</remarks>
-        /// <response code="204">Recipe updated successfully.</response>
-        /// <response code="404">Couldn't find an recipe with the given id to update.</response>
-        /// <response code="500">Oops! Can't update the recipe right now.</response>
-        // PUT api/<RecipesController>/5
-        [HttpPut("{id:length(24)}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(string id, Recipe updateRecipe)
-        {
-            var recipe = await _users.GetRecipeById(id);
-            if (recipe == null) return NotFound();
-
-            updateRecipe.Id = recipe.Id;
-            await _users.UpdateRecipeAsync(id, updateRecipe);
-
-            return NoContent();
-        }
 
         /// <summary>
         /// Deletes an existing recipe from the database.
@@ -61,17 +40,13 @@ namespace OGFoodAPI.Controllers
         /// <response code="404">Couldn't find a recipe with the given id to delete.</response>
         /// <response code="500">Oops! Can't delete the recipe right now.</response>
         // DELETE api/<IngredientsController>/5
-        [HttpDelete("{id:length(24)}")]
+        [HttpDelete("{name}/{password}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string name, string password)
         {
-            var recipe = await _recipes.GetRecipeById(id);
-            if (recipe == null) return NotFound();
-
-            await _recipes.DeleteRecipeAsync(id);
+            _users.DeleteUser(name, password);
             return NoContent();
         }
     }
-}
 }
