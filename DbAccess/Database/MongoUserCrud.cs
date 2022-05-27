@@ -3,7 +3,7 @@
 namespace DbAccess.Database
 {
     using DbAccess.Interfaces;
-    using DbAccess.Models;
+    using SharedInterfaces.Models;
     using MongoDB.Driver;
     using System.Collections.Generic;
     using System.Linq;

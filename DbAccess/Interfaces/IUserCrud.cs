@@ -1,4 +1,4 @@
-﻿using DbAccess.Models;
+﻿using SharedInterfaces.Models;
 
 namespace DbAccess.Interfaces
 {
