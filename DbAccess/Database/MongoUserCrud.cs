@@ -60,7 +60,7 @@ namespace DbAccess.Database
         // Read
         private async Task<User> GetUserById(string id)
         {
-            return (await Users.FindAsync(u => u.Id == id)).Current.FirstOrDefault()!;
+            return (await Users.FindAsync(u => u.Id == id)).FirstOrDefault()!;
         }
 
         public Task<User> GetUserByMail(string mail, string password)
@@ -70,11 +70,18 @@ namespace DbAccess.Database
 
         private async Task<string> UserNameToId(string name)
         {
-            return (await Users.FindAsync(u => u.Name == name)).Current.FirstOrDefault()!.Id;
+            return (await Users.FindAsync(u => u.Name == name)).FirstOrDefault().Id;
         }
         public async Task<User> GetUserByName(string name, string password)
         {
-            return (await Users.FindAsync(u => u.Name == name)).Current.FirstOrDefault()!;
+            var user = await GetUserById(await UserNameToId(name));
+            var pwd = pwdHelper.GetSaltedHash(password, user.Salt);
+            return (await Users.FindAsync(u => u.Name == name && u.Password == pwd)).FirstOrDefault();
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await (await Users.FindAsync(_ => true)).ToListAsync();
         }
 
         public async Task<bool> IsNameOrMailTaken(string name = "", string mail = "")
