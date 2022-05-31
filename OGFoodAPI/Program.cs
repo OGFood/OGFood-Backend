@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("*");
         });
 });
-
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,6 +35,7 @@ else
 
 builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
 builder.Services.AddSingleton<IRecipeCrud, MongoRecipeCrud>();
+builder.Services.AddSingleton<IUserCrud, MongoUserCrud>();
 
 //var csh = new ConnectionStringHelper();
 //builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));
