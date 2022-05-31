@@ -6,10 +6,11 @@ namespace DbAccess.Interfaces
     {
         // Create
         public Task<bool> CreateUser(User user);
-
+        
         // Read
         public Task<User> GetUserByName(string name, string password);
         public Task<User> GetUserByMail(string mail, string password);
+        public Task<List<User>> GetAllUsers();
 
         // Update
         public Task<bool> AddUserIngredient(string name, string password, List<Ingredient> ingredients);

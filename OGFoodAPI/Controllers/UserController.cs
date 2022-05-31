@@ -15,6 +15,12 @@ namespace OGFoodAPI.Controllers
         readonly IUserCrud _users;
         public UserController(IUserCrud users) => _users = users;
 
+        // GET api/<UserController>/5
+        [HttpGet("allusers")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            return await _users.GetAllUsers();
+        }
 
         // GET api/<UserController>/5
         [HttpGet("{name}/{password}")]
