@@ -1,6 +1,4 @@
-﻿
-
-namespace DbAccess.Database
+﻿namespace DbAccess.Database
 {
     using DbAccess.Interfaces;
     using SharedInterfaces.Models;
@@ -9,7 +7,7 @@ namespace DbAccess.Database
     using System.Linq;
     using System.Threading.Tasks;
 
-    internal class MongoUserCrud : IUserCrud
+    public class MongoUserCrud : IUserCrud
     {
         private readonly IMongoCollection<User> Users;
         private readonly IPwdHelper pwdHelper;
@@ -25,6 +23,8 @@ namespace DbAccess.Database
         // Create
         public async Task<bool> CreateUser(User user)
         {
+            user.Id = string.Empty;
+
             // Valid inputs?
             if (string.IsNullOrEmpty(user.Name) ||
                 !mailHelper.IsMailValid(user.Mail) ||
@@ -85,15 +85,19 @@ namespace DbAccess.Database
         }
 
         // Update
-        public Task UpdateUser(string name, string oldPassword, string newUsername = "", string newPassword = "")
+
+        public async Task<bool> UpdateUser(string name, string oldPassword,
+            string newUsername, string newPassword, string newMail)
         {
             throw new NotImplementedException();
         }
 
-        public Task AddUserIngredient(string name, string password, List<Ingredient> ingredients)
+        public async Task<bool> ReplaceUserIngredients(string name, string password,
+            List<Ingredient> Ingredients)
         {
-            throw new NotImplementedException();
+            var user = await GetUserById(await UserNameToId(name));
         }
+
         // Delete
         public async Task<bool> DeleteUser(string name, string password)
         {
@@ -113,21 +117,6 @@ namespace DbAccess.Database
             }
 
             return false;
-        }
-
-        Task<bool> IUserCrud.AddUserIngredient(string name, string password, List<Ingredient> ingredients)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> IUserCrud.UpdateUser(string name, string oldPassword, string newUsername, string newPassword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> RemoveUserIngredient(string name, string password, List<Ingredient> ingredients)
-        {
-            throw new NotImplementedException();
         }
     }
 }
