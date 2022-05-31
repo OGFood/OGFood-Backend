@@ -21,17 +21,17 @@ if (!String.IsNullOrEmpty(cnnString))
     //DbAccess proj
     builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(cnnString));
     //OGFoodAPI proj
-    builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(cnnString));
-    builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(cnnString)));
+    //builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(cnnString));
+    //builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(cnnString)));
 }
 else
 {
     //DbAccess proj
     builder.Services.AddSingleton<MongoDbAccess>(new MongoDbAccess(DbAccess.Factory.GetConnectionStringHelper()));
     //OGFoodAPI proj
-    var csh = new ConnectionStringHelper();
-    builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));
-    builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(csh.ConnectionString)));
+    //var csh = new ConnectionStringHelper();
+    //builder.Services.AddSingleton<MongoDbContext>(new MongoDbContext(csh.ConnectionString));
+    //builder.Services.AddSingleton<IRecipeContext>(new DbStorage(new MongoDbContext(csh.ConnectionString)));
 }
 
 builder.Services.AddSingleton<IIngredientCrud, MongoIngredientCrud>();
