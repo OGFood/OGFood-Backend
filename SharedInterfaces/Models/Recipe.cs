@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SharedInterfaces.Models
 {
-    public class Recipe : IRecipe
+    public class Recipe //: IRecipe
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
@@ -19,9 +19,9 @@ namespace SharedInterfaces.Models
         public string ImgUrl { get; set; } = "";
         public int Servings { get; set; }
         public IEnumerable<string> Instructions { get; set; }
-        [JsonConverter(typeof(ConcreteConverter<List<IngredientWithAmount>>))]
-        [BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IEnumerable<IIngredientWithAmount>, List<IngredientWithAmount>>))]
 
-        public IEnumerable<IIngredientWithAmount> Ingredients { get; set; }
+        //[JsonConverter(typeof(ConcreteConverter<IngredientWithAmount>))]
+        //[BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IIngredientWithAmount, IngredientWithAmount>))]
+        public IEnumerable<IngredientWithAmount> Ingredients { get; set; } = new List<IngredientWithAmount>();
     }
 }
