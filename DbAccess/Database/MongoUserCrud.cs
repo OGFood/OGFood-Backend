@@ -68,9 +68,9 @@ namespace DbAccess.Database
             throw new NotImplementedException();
         }
 
-        private async Task<string> UserNameToId(string name)
+        private async Task<string?> UserNameToId(string name)
         {
-            return (await Users.FindAsync(u => u.Name == name)).FirstOrDefault().Id;
+            return (await Users.FindAsync(u => u.Name == name)).FirstOrDefault()?.Id ?? null;
         }
         public async Task<User> GetUserByName(string name, string password)
         {
