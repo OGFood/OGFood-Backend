@@ -13,7 +13,7 @@ namespace DbAccess.Interfaces
         public Task<List<User>> GetAllUsers();
 
         // Update
-        public Task<bool> ReplaceUserIngredients(string name, string password, List<Ingredient> ingredients);
+        public Task<bool> ReplaceUserIngredients(User user);
         public Task<bool> UpdateUser(string name, string oldPassword, string newUsername = "", string newPassword = "", string newMail = "");
 
         // Delete
