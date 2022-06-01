@@ -10,7 +10,6 @@ namespace DbAccess.Interfaces
         
         // Read
         public Task<User> GetUserByName(string name, string password);
-        public Task<User> GetUserByMail(string mail, string password);
         public Task<List<User>> GetAllUsers();
 
         // Update

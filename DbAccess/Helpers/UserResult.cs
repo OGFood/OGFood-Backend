@@ -13,6 +13,5 @@ namespace DbAccess.Helpers
         ValidMail,
         PwdNotTooShort,
         PwdNotTooLong
-
     }
 }

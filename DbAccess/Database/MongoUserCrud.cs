@@ -27,7 +27,6 @@
         {
             // Prevents accidental ID insertion from sources such as swagger
             user.Id = string.Empty;
-            bool validInputs = true;
 
         var Result = new List<Result>
         {
@@ -78,6 +77,11 @@
             user.Password = pwdHelper.GetSaltedHash(user.Password, user.Salt);
 
             // Insert user
+            if(Result[(int)UserResult.CompletedSuccessfully].Success)
+            {
+                await Users.InsertOneAsync(user);
+            }
+
             return Result;
         }
 
@@ -88,14 +92,9 @@
             return (await Users.FindAsync(u => u.Id == id)).FirstOrDefault();
         }
 
-        public Task<User> GetUserByMail(string mail, string password)
-        {
-            throw new NotImplementedException();
-        }
-
         private async Task<string?> UserNameToId(string name)
         {
-            return (await Users.FindAsync(u => u.Name == name)).FirstOrDefault()?.Id ?? null;
+            return (await Users.FindAsync(u => u.Name == name)).FirstOrDefault()?.Id;
         }
 
         public async Task<User> GetUserByName(string name, string password)
@@ -134,16 +133,15 @@
             throw new NotImplementedException();
         }
 
-        public async Task<bool> ReplaceUserIngredients(string name, string password,
-            List<Ingredient> ingredients)
+        public async Task<bool> ReplaceUserIngredients(User user)
         {
             //TODO: add more safety
-            var user = await GetUserById(await UserNameToId(name));
+            var userById = await GetUserById(await UserNameToId(user.Name));
 
-            if(pwdHelper.IsPwdValid(user, password))
+            if(pwdHelper.IsPwdValid(userById, user.Password))
             {
-                user.Cupboard = ingredients;
-                var result = await Users.ReplaceOneAsync(u => user.Id == u.Id, user);
+                userById.Cupboard = user.Cupboard;
+                var result = await Users.ReplaceOneAsync(u => userById.Id == u.Id, userById);
                 return result.IsAcknowledged;
             }
             else
