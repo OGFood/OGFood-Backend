@@ -51,7 +51,7 @@ namespace OGFoodAPI.Controllers
                     (UserResult.ValidMail, false) => () => BadRequest("Invalid email"),
                     (UserResult.PwdNotTooShort, false) => () => BadRequest("Password too short"),
                     (UserResult.PwdNotTooLong, false) => () => BadRequest("Password too long"),
-                    _ => () => Ok("User Added")
+                    _ => call
                 };
             });
 
@@ -81,7 +81,7 @@ namespace OGFoodAPI.Controllers
         public async Task<IActionResult> Delete(string name, string password)
         {
             if (await _users.DeleteUser(name, password))
-                Ok();
+               return Ok();
 
             return BadRequest();
         }
