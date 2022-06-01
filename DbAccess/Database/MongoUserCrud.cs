@@ -1,6 +1,4 @@
-﻿
-
-namespace DbAccess.Database
+﻿namespace DbAccess.Database
 {
     using DbAccess.Interfaces;
     using SharedInterfaces.Models;
@@ -24,43 +22,70 @@ namespace DbAccess.Database
         }
 
         // Create
-        public async Task<bool> CreateUser(User user)
+        //=============================================================================================
+        public async Task<List<Result>> CreateUser(User user)
         {
+            // Prevents accidental ID insertion from sources such as swagger
+            user.Id = string.Empty;
+            bool validInputs = true;
+
+        var Result = new List<Result>
+        {
+            new Result() { Name = "CompletedSuccessFully", Success = true },
+            new Result() { Name = "ValidName", Success = true },
+            new Result() { Name = "ValidMail", Success = true },
+            new Result() { Name = "PwdNotTooShort", Success = true},
+            new Result() { Name = "PwdNotTooLong", Success = true},
+        };
+
             // Valid inputs?
-            if (string.IsNullOrEmpty(user.Name) ||
-                !mailHelper.IsMailValid(user.Mail) ||
-                user.Password.Length < 12)
+            if(string.IsNullOrEmpty(user.Name))
             {
-                return false;
+                Result[0].Success = false;
+                Result[1].Success = false;
+            }
+            if (!mailHelper.IsMailValid(user.Mail))
+            {
+                Result[0].Success = false;
+                Result[2].Success = false;
+            }
+            if(user.Password.Length < 8)
+            {
+                Result[0].Success = false;
+                Result[3].Success = false;
+            }
+            if(user.Password.Length > 20)
+            {
+                Result[0].Success = false;
+                Result[4].Success = false;
             }
 
             // Name/Mail taken?
-            if (await IsNameOrMailTaken(user.Name, user.Name))
+            bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Name);
+            if (nameOrMailTaken[0])
             {
-                return false;
+                Result[0].Success = false;
+                Result[1].Success = false;
+            }
+            if(nameOrMailTaken[1])
+            {
+                Result[0].Success = false;
+                Result[2].Success = false;
             }
 
-            // Prepare user to insert
+            // Hash & Salt
             user.Salt = pwdHelper.GetSalt();
             user.Password = pwdHelper.GetSaltedHash(user.Password, user.Salt);
 
             // Insert user
-            try
-            {
-                await Users.InsertOneAsync(user);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
+            return Result;
         }
 
         // Read
+        //=============================================================================================
         private async Task<User> GetUserById(string id)
         {
-            return (await Users.FindAsync(u => u.Id == id)).FirstOrDefault()!;
+            return (await Users.FindAsync(u => u.Id == id)).FirstOrDefault();
         }
 
         public Task<User> GetUserByMail(string mail, string password)
@@ -72,11 +97,20 @@ namespace DbAccess.Database
         {
             return (await Users.FindAsync(u => u.Name == name)).FirstOrDefault()?.Id ?? null;
         }
+
         public async Task<User> GetUserByName(string name, string password)
         {
-            var user = await GetUserById(await UserNameToId(name));
-            var pwd = pwdHelper.GetSaltedHash(password, user.Salt);
-            return (await Users.FindAsync(u => u.Name == name && u.Password == pwd)).FirstOrDefault();
+            User user = await GetUserById(await UserNameToId(name));
+            if (!pwdHelper.IsPwdValid(user, password))
+            {
+                return null;
+            }
+
+            //Scrub
+            user.Password = String.Empty;
+            user.Salt = String.Empty;
+
+            return user;
         }
 
         public async Task<List<User>> GetAllUsers()
@@ -84,58 +118,53 @@ namespace DbAccess.Database
             return await (await Users.FindAsync(_ => true)).ToListAsync();
         }
 
-        public async Task<bool> IsNameOrMailTaken(string name = "", string mail = "")
+        public async Task<bool[]> IsNameOrMailTaken(string name = "", string mail = "")
         {
             var userName = await Users.FindAsync(u => u.Name == name);
             var userMail = await Users.FindAsync(u => u.Mail == mail);
 
-            return userName == null || userMail == null;
+            return new bool[] { userName == null, userMail == null };
         }
 
         // Update
-        public Task UpdateUser(string name, string oldPassword, string newUsername = "", string newPassword = "")
+        //=============================================================================================
+        public async Task<bool> UpdateUser(string name, string oldPassword,
+            string newUsername, string newPassword, string newMail)
         {
             throw new NotImplementedException();
         }
 
-        public Task AddUserIngredient(string name, string password, List<Ingredient> ingredients)
+        public async Task<bool> ReplaceUserIngredients(string name, string password,
+            List<Ingredient> ingredients)
         {
-            throw new NotImplementedException();
+            //TODO: add more safety
+            var user = await GetUserById(await UserNameToId(name));
+
+            if(pwdHelper.IsPwdValid(user, password))
+            {
+                user.Cupboard = ingredients;
+                var result = await Users.ReplaceOneAsync(u => user.Id == u.Id, user);
+                return result.IsAcknowledged;
+            }
+            else
+            {
+                return false;
+            }
         }
+
         // Delete
+        //=============================================================================================
         public async Task<bool> DeleteUser(string name, string password)
         {
             var user = await GetUserById(await UserNameToId(name));
 
-            if (pwdHelper.IsPwdValid(password, user.Salt, user.Password))
+            if (pwdHelper.IsPwdValid(user, password))
             {
-                try
-                {
-                    await Users.DeleteOneAsync(u => u.Name == name);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                var result = await Users.DeleteOneAsync(u => u.Name == name);
+                return result.IsAcknowledged;
             }
 
             return false;
-        }
-
-        Task<bool> IUserCrud.AddUserIngredient(string name, string password, List<Ingredient> ingredients)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> IUserCrud.UpdateUser(string name, string oldPassword, string newUsername, string newPassword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> RemoveUserIngredient(string name, string password, List<Ingredient> ingredients)
-        {
-            throw new NotImplementedException();
         }
     }
 }
