@@ -117,10 +117,10 @@
 
         public async Task<bool[]> IsNameOrMailTaken(string name = "", string mail = "")
         {
-            string userName = (await Users.FindAsync(u => u.Name == name)).FirstOrDefault().Name;
-            string userMail = (await Users.FindAsync(u => u.Mail == mail)).FirstOrDefault().Mail;
+            var userName = await Users.FindAsync(u => u.Name == name);
+            var userMail = await Users.FindAsync(u => u.Mail == mail);
 
-            return new bool[] { string.IsNullOrEmpty(userName), string.IsNullOrEmpty(userMail) };
+            return new bool[] { userName != null, userMail != null };
         }
 
         // Update
