@@ -2,10 +2,11 @@
 
 namespace DbAccess.Interfaces
 {
+    using Helpers;
     public interface IUserCrud
     {
         // Create
-        public Task<bool> CreateUser(User user);
+        public Task<List<Result>> CreateUser(User user);
         
         // Read
         public Task<User> GetUserByName(string name, string password);
