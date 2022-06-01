@@ -1,12 +1,12 @@
 ﻿namespace DbAccess.Database
 {
+    using DbAccess.Helpers;
     using DbAccess.Interfaces;
-    using SharedInterfaces.Models;
     using MongoDB.Driver;
+    using SharedInterfaces.Models;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using DbAccess.Helpers;
 
     public class MongoUserCrud : IUserCrud
     {
@@ -28,7 +28,7 @@
             // Prevents accidental ID insertion from sources such as swagger
             user.Id = string.Empty;
 
-            var result = new List<Result>
+            List<Result>? result = new List<Result>
             {
                 new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
                 new Result() { Name = UserResult.ValidName, Success = true },
@@ -38,7 +38,7 @@
             };
 
             // Valid inputs?
-            if(string.IsNullOrEmpty(user.Name))
+            if (string.IsNullOrEmpty(user.Name))
             {
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.ValidName].Success = false;
@@ -48,12 +48,12 @@
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.ValidMail].Success = false;
             }
-            if(user.Password.Length < 8)
+            if (user.Password.Length < 8)
             {
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.PwdNotTooShort].Success = false;
             }
-            if(user.Password.Length > 20)
+            if (user.Password.Length > 20)
             {
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.PwdNotTooLong].Success = false;
@@ -66,14 +66,14 @@
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.ValidName].Success = false;
             }
-            if(nameOrMailTaken[1])
+            if (nameOrMailTaken[1])
             {
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.ValidMail].Success = false;
             }
 
             // Insert user
-            if(result[(int)UserResult.CompletedSuccessfully].Success)
+            if (result[(int)UserResult.CompletedSuccessfully].Success)
             {
                 await Users.InsertOneAsync(user);
             }
@@ -102,8 +102,8 @@
             }
 
             //Scrub
-            user.Password = String.Empty;
-            user.Salt = String.Empty;
+            user.Password = string.Empty;
+            user.Salt = string.Empty;
 
             return user;
         }
@@ -115,8 +115,8 @@
 
         public async Task<bool[]> IsNameOrMailTaken(string name = "", string mail = "")
         {
-            var userName = await Users.FindAsync(u => u.Name == name);
-            var userMail = await Users.FindAsync(u => u.Mail == mail);
+            IAsyncCursor<User>? userName = await Users.FindAsync(u => u.Name == name);
+            IAsyncCursor<User>? userMail = await Users.FindAsync(u => u.Mail == mail);
 
             return new bool[] { userName == null, userMail == null };
         }
@@ -126,10 +126,10 @@
         public async Task<List<Result>> UpdateUser(User user)
         {
             // Gets user to update
-            var userById = await GetUserById(await UserNameToId(user.Name));
+            User userById = await GetUserById(user.Id);
 
-            // success list
-            var result = new List<Result>
+            // Success list
+            List<Result>? result = new List<Result>
             {
                 new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
                 new Result() { Name = UserResult.ValidName, Success = true },
@@ -170,11 +170,10 @@
                 result[(int)UserResult.ValidMail].Success = false;
             }
 
-            // Insert updated values
-            userById.Cupboard = user.Cupboard;
-            userById.Mail = user.Mail;
-            userById.Name = user.Name;
-            await Users.ReplaceOneAsync(u => userById.Id == u.Id, userById);
+            if (result[(int)UserResult.CompletedSuccessfully].Success)
+            {
+                await Users.ReplaceOneAsync(u => user.Id == u.Id, user);
+            }
             return result;
         }
 
@@ -182,11 +181,11 @@
         //=============================================================================================
         public async Task<bool> DeleteUser(string name, string password)
         {
-            var user = await GetUserById(await UserNameToId(name));
+            User? user = await GetUserById(await UserNameToId(name));
 
             if (pwdHelper.IsPwdValid(user, password))
             {
-                var result = await Users.DeleteOneAsync(u => u.Name == name);
+                DeleteResult? result = await Users.DeleteOneAsync(u => u.Name == name);
                 return result.IsAcknowledged;
             }
 
