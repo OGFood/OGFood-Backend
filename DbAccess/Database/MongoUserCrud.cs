@@ -75,6 +75,8 @@
             // Insert user
             if (result[(int)UserResult.CompletedSuccessfully].Success)
             {
+                user.Salt = pwdHelper.GetSalt();
+                user.Password = pwdHelper.GetSaltedHash(user.Password, user.Salt);
                 await Users.InsertOneAsync(user);
             }
 
