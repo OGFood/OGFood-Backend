@@ -8,7 +8,7 @@ namespace OGFoodAPI.Controllers
     using Microsoft.AspNetCore.Cors;
     using SharedInterfaces.Models;
 
-    [EnableCors("Policy1")]
+    //[EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class RecipesController : ControllerBase

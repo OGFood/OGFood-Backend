@@ -3,6 +3,7 @@ namespace DbAccess.Helpers
 {
     using System;
     using Interfaces;
+    using System.Configuration;
 
     public sealed class ConnectionStringHelper : IConnectionStringHelper
     {
