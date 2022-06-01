@@ -28,61 +28,57 @@
             // Prevents accidental ID insertion from sources such as swagger
             user.Id = string.Empty;
 
-        var Result = new List<Result>
-        {
-            new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
-            new Result() { Name = UserResult.ValidName, Success = true },
-            new Result() { Name = UserResult.ValidMail, Success = true },
-            new Result() { Name = UserResult.PwdNotTooShort, Success = true},
-            new Result() { Name = UserResult.PwdNotTooLong, Success = true},
-        };
+            var result = new List<Result>
+            {
+                new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
+                new Result() { Name = UserResult.ValidName, Success = true },
+                new Result() { Name = UserResult.ValidMail, Success = true },
+                new Result() { Name = UserResult.PwdNotTooShort, Success = true},
+                new Result() { Name = UserResult.PwdNotTooLong, Success = true},
+            };
 
             // Valid inputs?
             if(string.IsNullOrEmpty(user.Name))
             {
-                Result[(int)UserResult.CompletedSuccessfully].Success = false;
-                Result[(int)UserResult.ValidName].Success = false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidName].Success = false;
             }
             if (!mailHelper.IsMailValid(user.Mail))
             {
-                Result[(int)UserResult.CompletedSuccessfully].Success = false;
-                Result[(int)UserResult.ValidMail].Success = false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidMail].Success = false;
             }
             if(user.Password.Length < 8)
             {
-                Result[(int)UserResult.CompletedSuccessfully].Success = false;
-                Result[(int)UserResult.PwdNotTooShort].Success = false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.PwdNotTooShort].Success = false;
             }
             if(user.Password.Length > 20)
             {
-                Result[(int)UserResult.CompletedSuccessfully].Success = false;
-                Result[(int)UserResult.PwdNotTooLong].Success = false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.PwdNotTooLong].Success = false;
             }
 
             // Name/Mail taken?
-            bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Name);
+            bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Mail);
             if (nameOrMailTaken[0])
             {
-                Result[(int)UserResult.CompletedSuccessfully].Success = false;
-                Result[(int)UserResult.ValidName].Success = false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidName].Success = false;
             }
             if(nameOrMailTaken[1])
             {
-                Result[(int)UserResult.CompletedSuccessfully].Success = false;
-                Result[(int)UserResult.ValidMail].Success = false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidMail].Success = false;
             }
 
-            // Hash & Salt
-            user.Salt = pwdHelper.GetSalt();
-            user.Password = pwdHelper.GetSaltedHash(user.Password, user.Salt);
-
             // Insert user
-            if(Result[(int)UserResult.CompletedSuccessfully].Success)
+            if(result[(int)UserResult.CompletedSuccessfully].Success)
             {
                 await Users.InsertOneAsync(user);
             }
 
-            return Result;
+            return result;
         }
 
         // Read
@@ -127,27 +123,59 @@
 
         // Update
         //=============================================================================================
-        public async Task<bool> UpdateUser(string name, string oldPassword,
-            string newUsername, string newPassword, string newMail)
+        public async Task<List<Result>> UpdateUser(User user)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> ReplaceUserIngredients(User user)
-        {
-            //TODO: add more safety
+            // Gets user to update
             var userById = await GetUserById(await UserNameToId(user.Name));
 
-            if(pwdHelper.IsPwdValid(userById, user.Password))
+            // success list
+            var result = new List<Result>
             {
-                userById.Cupboard = user.Cupboard;
-                var result = await Users.ReplaceOneAsync(u => userById.Id == u.Id, userById);
-                return result.IsAcknowledged;
-            }
-            else
+                new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
+                new Result() { Name = UserResult.ValidName, Success = true },
+                new Result() { Name = UserResult.ValidMail, Success = true },
+                new Result() { Name = UserResult.ValidPwd, Success = true}
+            };
+
+            // Valid pwd for user?
+            if (!pwdHelper.IsPwdValid(userById, user.Password))
             {
-                return false;
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidPwd].Success = false;
+                return result;
             }
+
+            // Valid inputs?
+            if (string.IsNullOrEmpty(user.Name))
+            {
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidName].Success = false;
+            }
+            if (!mailHelper.IsMailValid(user.Mail))
+            {
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidMail].Success = false;
+            }
+
+            // Name/Mail taken?
+            bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Mail);
+            if (nameOrMailTaken[0])
+            {
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidName].Success = false;
+            }
+            if (nameOrMailTaken[1])
+            {
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                result[(int)UserResult.ValidMail].Success = false;
+            }
+
+            // Insert updated values
+            userById.Cupboard = user.Cupboard;
+            userById.Mail = user.Mail;
+            userById.Name = user.Name;
+            await Users.ReplaceOneAsync(u => userById.Id == u.Id, userById);
+            return result;
         }
 
         // Delete

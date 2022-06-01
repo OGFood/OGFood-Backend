@@ -12,6 +12,7 @@ namespace DbAccess.Helpers
         ValidName,
         ValidMail,
         PwdNotTooShort,
-        PwdNotTooLong
+        PwdNotTooLong,
+        ValidPwd
     }
 }
