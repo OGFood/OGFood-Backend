@@ -161,12 +161,12 @@
 
             // Name/Mail taken?
             bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Mail);
-            if (nameOrMailTaken[0])
+            if (nameOrMailTaken[0] && user.Name != userById.Name)
             {
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.ValidName].Success = false;
             }
-            if (nameOrMailTaken[1])
+            if (nameOrMailTaken[1] && user.Mail != userById.Mail)
             {
                 result[(int)UserResult.CompletedSuccessfully].Success = false;
                 result[(int)UserResult.ValidMail].Success = false;
