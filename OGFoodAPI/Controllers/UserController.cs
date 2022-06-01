@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace OGFoodAPI.Controllers
 {
+    [EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

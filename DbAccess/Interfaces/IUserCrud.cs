@@ -13,11 +13,10 @@ namespace DbAccess.Interfaces
         public Task<List<User>> GetAllUsers();
 
         // Update
-        public Task<bool> AddUserIngredient(string name, string password, List<Ingredient> ingredients);
-        public Task<bool> UpdateUser(string name, string oldPassword, string newUsername = "", string newPassword = "");
+        public Task<bool> ReplaceUserIngredients(string name, string password, List<Ingredient> ingredients);
+        public Task<bool> UpdateUser(string name, string oldPassword, string newUsername = "", string newPassword = "", string newMail = "");
 
         // Delete
-        public Task<bool> RemoveUserIngredient(string name, string password, List<Ingredient> ingredients);
         public Task<bool> DeleteUser(string name, string password);
     }
 }
