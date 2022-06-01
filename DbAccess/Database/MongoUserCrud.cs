@@ -131,13 +131,20 @@
             User userById = await GetUserById(user.Id);
 
             // Success list
-            List<Result>? result = new List<Result>
+            List<Result> result = new List<Result>
             {
                 new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
                 new Result() { Name = UserResult.ValidName, Success = true },
                 new Result() { Name = UserResult.ValidMail, Success = true },
                 new Result() { Name = UserResult.ValidPwd, Success = true}
             };
+
+            // Null check
+            if (userById == null)
+            {
+                result[(int)UserResult.CompletedSuccessfully].Success = false;
+                return result;
+            }
 
             // Valid pwd for user?
             if (!pwdHelper.IsPwdValid(userById, user.Password))
@@ -185,11 +192,16 @@
         //=============================================================================================
         public async Task<bool> DeleteUser(string name, string password)
         {
-            User? user = await GetUserById(await UserNameToId(name));
+            User user = await GetUserById(await UserNameToId(name));
+
+            if(user == null)
+            {
+                return false;
+            }
 
             if (pwdHelper.IsPwdValid(user, password))
             {
-                DeleteResult? result = await Users.DeleteOneAsync(u => u.Name == name);
+                DeleteResult result = await Users.DeleteOneAsync(u => u.Name == name);
                 return result.IsAcknowledged;
             }
 
