@@ -23,23 +23,54 @@
 
         // Create
         //=============================================================================================
-        public async Task<bool> CreateUser(User user)
+        public async Task<List<Result>> CreateUser(User user)
         {
             // Prevents accidental ID insertion from sources such as swagger
             user.Id = string.Empty;
+            bool validInputs = true;
+
+        var Result = new List<Result>
+        {
+            new Result() { Name = "CompletedSuccessFully", Success = true },
+            new Result() { Name = "ValidName", Success = true },
+            new Result() { Name = "ValidMail", Success = true },
+            new Result() { Name = "PwdNotTooShort", Success = true},
+            new Result() { Name = "PwdNotTooLong", Success = true},
+        };
 
             // Valid inputs?
-            if (string.IsNullOrEmpty(user.Name) ||
-                !mailHelper.IsMailValid(user.Mail) ||
-                user.Password.Length < 12)
+            if(string.IsNullOrEmpty(user.Name))
             {
-                return false;
+                Result[0].Success = false;
+                Result[1].Success = false;
+            }
+            if (!mailHelper.IsMailValid(user.Mail))
+            {
+                Result[0].Success = false;
+                Result[2].Success = false;
+            }
+            if(user.Password.Length < 8)
+            {
+                Result[0].Success = false;
+                Result[3].Success = false;
+            }
+            if(user.Password.Length > 20)
+            {
+                Result[0].Success = false;
+                Result[4].Success = false;
             }
 
             // Name/Mail taken?
-            if (await IsNameOrMailTaken(user.Name, user.Name))
+            bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Name);
+            if (nameOrMailTaken[0])
             {
-                return false;
+                Result[0].Success = false;
+                Result[1].Success = false;
+            }
+            if(nameOrMailTaken[1])
+            {
+                Result[0].Success = false;
+                Result[2].Success = false;
             }
 
             // Hash & Salt
@@ -47,14 +78,14 @@
             user.Password = pwdHelper.GetSaltedHash(user.Password, user.Salt);
 
             // Insert user
-            return Users.InsertOneAsync(user).IsCompletedSuccessfully;
+            return Result;
         }
 
         // Read
         //=============================================================================================
         private async Task<User> GetUserById(string id)
         {
-            return (await Users.FindAsync(u => u.Id == id)).FirstOrDefault()!;
+            return (await Users.FindAsync(u => u.Id == id)).FirstOrDefault();
         }
 
         public Task<User> GetUserByMail(string mail, string password)
@@ -87,12 +118,12 @@
             return await (await Users.FindAsync(_ => true)).ToListAsync();
         }
 
-        public async Task<bool> IsNameOrMailTaken(string name = "", string mail = "")
+        public async Task<bool[]> IsNameOrMailTaken(string name = "", string mail = "")
         {
             var userName = await Users.FindAsync(u => u.Name == name);
             var userMail = await Users.FindAsync(u => u.Mail == mail);
 
-            return userName == null || userMail == null;
+            return new bool[] { userName == null, userMail == null };
         }
 
         // Update
