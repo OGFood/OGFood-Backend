@@ -31,46 +31,46 @@
 
         var Result = new List<Result>
         {
-            new Result() { Name = "CompletedSuccessFully", Success = true },
-            new Result() { Name = "ValidName", Success = true },
-            new Result() { Name = "ValidMail", Success = true },
-            new Result() { Name = "PwdNotTooShort", Success = true},
-            new Result() { Name = "PwdNotTooLong", Success = true},
+            new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
+            new Result() { Name = UserResult.ValidName, Success = true },
+            new Result() { Name = UserResult.ValidMail, Success = true },
+            new Result() { Name = UserResult.PwdNotTooShort, Success = true},
+            new Result() { Name = UserResult.PwdNotTooLong, Success = true},
         };
 
             // Valid inputs?
             if(string.IsNullOrEmpty(user.Name))
             {
-                Result[0].Success = false;
-                Result[1].Success = false;
+                Result[(int)UserResult.CompletedSuccessfully].Success = false;
+                Result[(int)UserResult.ValidName].Success = false;
             }
             if (!mailHelper.IsMailValid(user.Mail))
             {
-                Result[0].Success = false;
-                Result[2].Success = false;
+                Result[(int)UserResult.CompletedSuccessfully].Success = false;
+                Result[(int)UserResult.ValidMail].Success = false;
             }
             if(user.Password.Length < 8)
             {
-                Result[0].Success = false;
-                Result[3].Success = false;
+                Result[(int)UserResult.CompletedSuccessfully].Success = false;
+                Result[(int)UserResult.PwdNotTooShort].Success = false;
             }
             if(user.Password.Length > 20)
             {
-                Result[0].Success = false;
-                Result[4].Success = false;
+                Result[(int)UserResult.CompletedSuccessfully].Success = false;
+                Result[(int)UserResult.PwdNotTooLong].Success = false;
             }
 
             // Name/Mail taken?
             bool[] nameOrMailTaken = await IsNameOrMailTaken(user.Name, user.Name);
             if (nameOrMailTaken[0])
             {
-                Result[0].Success = false;
-                Result[1].Success = false;
+                Result[(int)UserResult.CompletedSuccessfully].Success = false;
+                Result[(int)UserResult.ValidName].Success = false;
             }
             if(nameOrMailTaken[1])
             {
-                Result[0].Success = false;
-                Result[2].Success = false;
+                Result[(int)UserResult.CompletedSuccessfully].Success = false;
+                Result[(int)UserResult.ValidMail].Success = false;
             }
 
             // Hash & Salt

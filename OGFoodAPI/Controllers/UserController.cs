@@ -40,7 +40,7 @@ namespace OGFoodAPI.Controllers
         public async Task<ActionResult<bool>> Post(User user)
         {
             var status = await _users.CreateUser(user);
-            return status;
+            return NoContent();
         }
 
 

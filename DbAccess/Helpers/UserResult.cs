@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace DbAccess.Helpers
 {
-    public class Result
+    public enum UserResult
     {
-        public UserResult Name { get; set; }
-        public bool Success { get; set; }
+        CompletedSuccessfully,
+        ValidName,
+        ValidMail,
+        PwdNotTooShort,
+        PwdNotTooLong
+
     }
 }
