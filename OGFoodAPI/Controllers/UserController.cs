@@ -40,19 +40,19 @@ namespace OGFoodAPI.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult<bool>> Post(User user)
         {
-            Func<StatusCodeResult> call = new(() => Ok());
+            Func<ObjectResult> call = new(() => Ok("Úser added"));
             var status = await _users.CreateUser(user);
 
             status.ForEach(x =>
             {
-                call = x.Name switch
+                call = (x.Name, x.Success) switch
                 {
-                    UserResult.CompletedSuccessfully => () => Ok(),
-                    UserResult.ValidName => () => BadRequest(),
-                    UserResult.ValidMail => () => BadRequest(),
-                    UserResult.PwdNotTooShort => () => BadRequest(),
-                    UserResult.PwdNotTooLong => () => BadRequest(),
-                    _ => () => Ok()
+                    (UserResult.CompletedSuccessfully, true) => () => Ok("User Added"),
+                    (UserResult.ValidName, false) => () => BadRequest("Invalid name"),
+                    (UserResult.ValidMail, false) => () => BadRequest("Invalid email"),
+                    (UserResult.PwdNotTooShort, false) => () => BadRequest("Password too short"),
+                    (UserResult.PwdNotTooLong, false) => () => BadRequest("Password too long"),
+                    _ => () => BadRequest("Unknown user validation error")
                 };
             });
 
