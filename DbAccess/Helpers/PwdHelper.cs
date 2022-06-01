@@ -4,17 +4,16 @@
     using System.Security.Cryptography;
     using Interfaces;
     using System.Text;
+    using SharedInterfaces.Models;
 
     internal sealed class PwdHelper : IPwdHelper
     {
         private static PwdHelper? instance = null;
         public static PwdHelper Instance => instance ??= new PwdHelper();
 
-        public bool IsPwdValid(string pwd, string salt, string saltedHash)
+        public bool IsPwdValid(User user, string pwd)
         {
-            string newHashedPin = GetSaltedHash(pwd, salt);
-
-            return newHashedPin.Equals(saltedHash);
+            return user.Password == GetSaltedHash(pwd, user.Salt);
         }
 
         public string GetSaltedHash(string pwd, string salt)
