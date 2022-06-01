@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace OGFoodAPI.Controllers
 {
+    [EnableCors("Policy1")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -24,17 +25,22 @@ namespace OGFoodAPI.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{name}/{password}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<User>> Get(string name, string password)
         {
-            return await _users.GetUserByName(name, password);
+            var status = await _users.GetUserByName(name, password);
+
+            return status;
         }
 
         // POST api/<UserController>
         [HttpPost]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult<bool>> Post(User user)
         {
-            var succeeded = await _users.CreateUser(user);
-            return succeeded;
+            var status = await _users.CreateUser(user);
+            return NoContent();
         }
 
 
@@ -47,8 +53,7 @@ namespace OGFoodAPI.Controllers
         /// <response code="500">Oops! Can't delete the recipe right now.</response>
         // DELETE api/<IngredientsController>/5
         [HttpDelete("{name}/{password}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
         public async Task<IActionResult> Delete(string name, string password)
         {
             _users.DeleteUser(name, password);
