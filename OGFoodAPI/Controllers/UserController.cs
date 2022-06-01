@@ -3,6 +3,7 @@ using SharedInterfaces.Models;
 using static DbAccess.Factory;
 using DbAccess.Interfaces;
 using Microsoft.AspNetCore.Cors;
+using DbAccess.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,7 +40,31 @@ namespace OGFoodAPI.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult<bool>> Post(User user)
         {
+            Func<StatusCodeResult> call = new(() => Ok());
             var status = await _users.CreateUser(user);
+
+            status.ForEach(x =>
+            {
+                call = x.Name switch
+                {
+                    UserResult.CompletedSuccessfully => () => Ok(),
+                    UserResult.ValidName => () => BadRequest(),
+                    UserResult.ValidMail => () => BadRequest(),
+                    UserResult.PwdNotTooShort => () => BadRequest(),
+                    UserResult.PwdNotTooLong => () => BadRequest(),
+                    _ => () => Ok()
+                };
+            });
+
+            return call.Invoke();
+        }
+
+        // PUT api/<UserController>
+        [HttpDelete("{name}/{password}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
+        public async Task<IActionResult> Put(User user)
+        {
+            _users.UpdateUser(user);
             return NoContent();
         }
 
