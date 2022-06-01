@@ -189,8 +189,8 @@
 
             if (pwdHelper.IsPwdValid(user, password))
             {
-                await Users.DeleteOneAsync(u => u.Name == name);
-                return true;
+                DeleteResult? result = await Users.DeleteOneAsync(u => u.Name == name);
+                return result.IsAcknowledged;
             }
 
             return false;
