@@ -172,6 +172,8 @@
 
             if (result[(int)UserResult.CompletedSuccessfully].Success)
             {
+                user.Password = userById.Password;
+                user.Salt = userById.Salt;
                 await Users.ReplaceOneAsync(u => user.Id == u.Id, user);
             }
             return result;
