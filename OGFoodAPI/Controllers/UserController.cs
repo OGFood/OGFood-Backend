@@ -81,8 +81,10 @@ namespace OGFoodAPI.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
         public async Task<IActionResult> Delete(string name, string password)
         {
-            _users.DeleteUser(name, password);
-            return NoContent();
+            if (await _users.DeleteUser(name, password))
+                Ok();
+
+            return BadRequest();
         }
     }
 }
