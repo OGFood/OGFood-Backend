@@ -28,29 +28,29 @@ namespace OGFoodAPI.RecipeService.Strategies
 
         public async Task<Recipe> Delete(Recipe recipe)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => new Recipe());
         }
 
         public async Task<List<Recipe>> Get(Recipe recipe)
         {
             var res = _recipes.Where(q => q.Id == recipe.Id);
 
-            return res.ToList();
+            return await Task.Run(() => res.ToList());
         }
 
         public async Task<List<Recipe>> Patch(Recipe recipe, Recipe recipeUpdated)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => new List<Recipe>());
         }
 
         public async Task<List<Recipe>> Post(Recipe recipe)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => new List<Recipe>());
         }
 
-        public Task<Recipe> Put(Recipe recipe, Recipe recipeUpdated)
+        public async Task<Recipe> Put(Recipe recipe, Recipe recipeUpdated)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => new Recipe());
         }
     }
 }

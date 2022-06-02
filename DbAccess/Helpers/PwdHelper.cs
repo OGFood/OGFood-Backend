@@ -27,7 +27,7 @@
 
         public string GetSalt(int size = 32)
         {
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            RandomNumberGenerator rng = RandomNumberGenerator.Create();
             byte[] buff = new byte[size];
             rng.GetBytes(buff);
 

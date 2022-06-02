@@ -28,7 +28,7 @@
             // Prevents accidental ID insertion from sources such as swagger
             user.Id = string.Empty;
 
-            List<Result>? result = new List<Result>
+            List<Result>? result = new()
             {
                 new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
                 new Result() { Name = UserResult.ValidName, Success = true },
@@ -97,11 +97,15 @@
 
         public async Task<User> GetUserByName(string name, string password)
         {
-            User user = await GetUserById(await UserNameToId(name));
+            string? id = await UserNameToId(name);
+
+            if (id == null)
+                return new User();
+
+            User user = await GetUserById(id);
+
             if (!pwdHelper.IsPwdValid(user, password))
-            {
-                return null;
-            }
+                return new User();
 
             //Scrub
             user.Password = string.Empty;
@@ -131,11 +135,13 @@
             User userById = await GetUserById(user.Id);
 
             // Success list
-            List<Result> result = new List<Result>
+            List<Result> result = new()
             {
                 new Result() { Name = UserResult.CompletedSuccessfully, Success = true },
                 new Result() { Name = UserResult.ValidName, Success = true },
                 new Result() { Name = UserResult.ValidMail, Success = true },
+                new Result() { Name = UserResult.PwdNotTooShort, Success = true },
+                new Result() { Name = UserResult.PwdNotTooLong, Success = true },
                 new Result() { Name = UserResult.ValidPwd, Success = true}
             };
 
@@ -192,7 +198,12 @@
         //=============================================================================================
         public async Task<bool> DeleteUser(string name, string password)
         {
-            User user = await GetUserById(await UserNameToId(name));
+            string? id = await UserNameToId(name);
+
+            if (id == null)
+                return false;
+
+            User user = await GetUserById(id);
 
             if(user == null)
             {
