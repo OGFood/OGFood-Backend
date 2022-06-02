@@ -13,7 +13,7 @@ namespace SharedInterfaces.Models
         public string Mail { get; set; } = "";
         public string Salt { get; set; } = "";
         public string Password { get; set; } = "";
-        [BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IEnumerable<IIngredient>, List<Ingredient>>))]
-        public IEnumerable<IIngredient> Cupboard { get; set; } = new List<IIngredient>();
+        //[BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IEnumerable<IIngredient>, List<Ingredient>>))]
+        public IEnumerable<Ingredient> Cupboard { get; set; } = new List<Ingredient>();
     }
 }
