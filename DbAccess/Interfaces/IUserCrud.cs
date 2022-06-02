@@ -7,7 +7,6 @@ namespace DbAccess.Interfaces
     {
         // Create
         public Task<List<Result>> CreateUser(User user);
-        
         // Read
         public Task<User> GetUserByName(string name, string password);
         public Task<List<User>> GetAllUsers();

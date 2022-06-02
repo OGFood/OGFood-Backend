@@ -17,7 +17,7 @@
         {
             var ingredientsList = await _ingredients.GetAllIngredients();
 
-            if (recipe.Ingredients.Count() > 0)
+            if (recipe.Ingredients.Any())
             {
                 foreach (var ingredient in recipe.Ingredients)
                 {

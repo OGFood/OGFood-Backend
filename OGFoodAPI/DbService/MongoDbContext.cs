@@ -29,6 +29,4 @@ namespace OGFoodAPI.DbService
             return db.GetCollection<T>(collection);
         }
     }
-
-
 }

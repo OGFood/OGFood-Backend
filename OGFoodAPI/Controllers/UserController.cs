@@ -8,7 +8,7 @@ using DbAccess.Helpers;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace OGFoodAPI.Controllers
-{ 
+{
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -63,10 +63,23 @@ namespace OGFoodAPI.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public async Task<IActionResult> Put(User user)
         {
-            _users.UpdateUser(user);
-            return NoContent();
-        }
+            Func<ObjectResult> call = new(() => Ok("User added"));
+            var status = await _users.UpdateUser(user);
 
+            status.ForEach(x =>
+            {
+                call = (x.Name, x.Success) switch
+                {
+                    (UserResult.CompletedSuccessfully, true) => () => Ok("User changed"),
+                    (UserResult.ValidName, false) => () => BadRequest("Invalid name"),
+                    (UserResult.ValidMail, false) => () => BadRequest("Invalid email"),
+                    (UserResult.ValidPwd, false) => () => BadRequest("Password not valid"),
+                    _ => call
+                };
+            });
+
+            return call.Invoke();
+        }
 
         /// <summary>
         /// Deletes an existing recipe from the database.
