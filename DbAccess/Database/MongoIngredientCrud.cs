@@ -34,11 +34,14 @@
         public async Task<List<Ingredient>> GetAllIngredients()
         {
             var result = await ingredients.FindAsync(_ => true);
-            return result.ToList();
+            return result.ToList().OrderBy(x => x.Name).ToList();
         }
 
-        public async Task AddIngredientAsync(Ingredient ingredient) => await ingredients.InsertOneAsync(ingredient);
-        public async Task UpdateIngredientAsync(string id, Ingredient ingredient) => await ingredients.ReplaceOneAsync(x => x.Id==id, ingredient);
-        public async Task DeleteIngredientAsync(string id) => await ingredients.DeleteOneAsync(x => x.Id == id);
+        public async Task AddIngredientAsync(Ingredient ingredient) =>
+            await ingredients.InsertOneAsync(ingredient);
+        public async Task UpdateIngredientAsync(string id, Ingredient ingredient) =>
+            await ingredients.ReplaceOneAsync(x => x.Id==id, ingredient);
+        public async Task DeleteIngredientAsync(string id) =>
+            await ingredients.DeleteOneAsync(x => x.Id == id);
     }
 }

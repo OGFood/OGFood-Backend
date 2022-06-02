@@ -35,7 +35,7 @@
         public async Task<List<Recipe>> GetAllRecipes()
         {
             var result = await _recipes.FindAsync(_ => true);
-            return result.ToList();
+            return result.ToList().OrderBy(x => x.Name).ToList();
         }
 
         public async Task AddRecipeAsync(Recipe recipe)

@@ -17,6 +17,10 @@
         public IMongoCollection<User> UserCollection { get => MongoConnect<User>(userCollection); }
         public IMongoCollection<Recipe> RecipeCollection { get => MongoConnect<Recipe>(recipeCollection); }
 
+        public MongoDbAccess(string cnnString)
+        {
+            connectionString = cnnString;
+        }
         public MongoDbAccess(IConnectionStringHelper csh) => connectionString = csh.ConnectionString;
 
         private IMongoCollection<T> MongoConnect<T>(in string collection)
