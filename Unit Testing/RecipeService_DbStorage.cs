@@ -65,7 +65,6 @@ namespace Unit_Testing
                 Id = "627e660df5145afdf6288d7d",
                 Name = "Pancakes",
                 Description = "Pancake - a clear favourite! Simple base recipe for thin pancakes. Throw them in the pan and serve with jam, cream, or why not some ice-cream!",
-                Instruction = "",
                 AproxTime = 20,
                 ImgUrl = "https://cdn-rdb.arla.com/Files/arla-se/3249856695/32b74f1c-1632-4aee-aa3b-8fd449494835.jpg?mode=crop&w=1269&h=715&ak=f525e733&hm=e78d4790",
                 Servings = 1,
