@@ -20,7 +20,7 @@ namespace DbAccess.Helpers
             const string file = @"ConnectionStrings\sikrit-string.txt";
             var combined = Path.Combine(documents, file);
             if (File.Exists(combined)) ConnectionString = File.ReadAllText(combined);
-            else if (Environment.GetEnvironmentVariable("CNNSTR") != "") ConnectionString = Environment.GetEnvironmentVariable("CNNSTR");
+            else if (Environment.GetEnvironmentVariable("CNNSTR") != "") ConnectionString = Environment.GetEnvironmentVariable("CNNSTR") ?? "";
         }
     }
 }
